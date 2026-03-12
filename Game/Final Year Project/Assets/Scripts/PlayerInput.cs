@@ -6,17 +6,22 @@ public class PlayerInput : MonoBehaviour
 {
     
     private Player playerScript;
+    public GameObject gameObject;
     [SerializeField] private Cooldown cooldown; // Reference to the Cooldown class for managing attack cooldowns
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     //player movement
     private float moveHorizontal;
-    private float moveForward;
+    private float moveVertical;
+    private Animator animator;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
+        
         playerScript = GetComponent<Player>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -26,7 +31,7 @@ public class PlayerInput : MonoBehaviour
     void Update()
     {
         moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveForward = Input.GetAxisRaw("Vertical");
+        moveVertical = Input.GetAxisRaw("Vertical");
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -45,14 +50,71 @@ public class PlayerInput : MonoBehaviour
 
     void MovePlayer()
     {
-        Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
-        Vector3 targetVelocity = movement * playerScript.playerMovement;
+        Vector2 movement = new Vector2(moveHorizontal, moveVertical).normalized;
+        Vector2 targetVelocity = movement * playerScript.playerMovement;
 
         // Apply movement to the Rigidbody
         Vector3 velocity = rb.velocity;
+
         velocity.x = targetVelocity.x;
-        velocity.z = targetVelocity.z;
+        velocity.y = targetVelocity.y;
         rb.velocity = velocity;
+        if (velocity.x > 0.01f)
+        {
+            // Right
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x);
+            transform.localScale = scale;
+
+            animator.SetBool("Right", true);
+            animator.SetBool("Left", false);
+            animator.SetBool("Front", false);
+            animator.SetBool("Back", false);
+            animator.SetFloat("Movement", 1f);
+        }
+        else if (velocity.x < -0.01f)
+        {
+            // Left
+            Vector3 scale = transform.localScale;
+            scale.x = -Mathf.Abs(scale.x);
+            transform.localScale = scale;
+
+            animator.SetBool("Left", true);
+            animator.SetBool("Right", true);
+            animator.SetBool("Front", false);
+            animator.SetBool("Back", false);
+            animator.SetFloat("Movement", 1f);
+        }
+        else if (velocity.y > 0.01f)
+        {
+            // Up
+            animator.SetBool("Front", true);
+            animator.SetBool("Back", false);
+            animator.SetBool("Left", false);
+            animator.SetBool("Right", false);
+            animator.SetFloat("Movement", 1f);
+        }
+        else if (velocity.y < -0.01f)
+        {
+            // Down
+            animator.SetBool("Back", true);
+            animator.SetBool("Front", false);
+            animator.SetBool("Left", false);
+            animator.SetBool("Right", false);
+            animator.SetFloat("Movement", 1f);
+        }
+
+        if(velocity.x == 0 && velocity.y == 0 )
+        {
+            
+            animator.SetFloat("Movement", 0f);
+        }
+        Debug.Log(velocity.x);
+
+            
+        
+        
+
     }
     void attack()
     {
