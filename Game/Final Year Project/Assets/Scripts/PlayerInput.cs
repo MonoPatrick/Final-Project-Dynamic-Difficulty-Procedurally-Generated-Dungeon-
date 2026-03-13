@@ -13,8 +13,12 @@ public class PlayerInput : MonoBehaviour
     private float moveHorizontal;
     private float moveVertical;
     private Animator animator;
-    
 
+    Vector2 movement;
+    Vector2 targetVelocity;
+
+    // Apply movement to the Rigidbody
+    Vector2 velocity;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +28,6 @@ public class PlayerInput : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    Vector3 movement;
 
 
     void Update()
@@ -50,70 +52,41 @@ public class PlayerInput : MonoBehaviour
 
     void MovePlayer()
     {
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical).normalized;
-        Vector2 targetVelocity = movement * playerScript.playerMovement;
+        movement = new Vector2(moveHorizontal, moveVertical).normalized;
+        targetVelocity = movement * playerScript.playerMovement;
 
         // Apply movement to the Rigidbody
-        Vector3 velocity = rb.velocity;
+        velocity = rb.velocity;
 
         velocity.x = targetVelocity.x;
         velocity.y = targetVelocity.y;
         rb.velocity = velocity;
-        if (velocity.x > 0.01f)
-        {
-            // Right
-            Vector3 scale = transform.localScale;
-            scale.x = Mathf.Abs(scale.x);
-            transform.localScale = scale;
 
-            animator.SetBool("Right", true);
-            animator.SetBool("Left", false);
-            animator.SetBool("Front", false);
-            animator.SetBool("Back", false);
-            animator.SetFloat("Movement", 1f);
-        }
-        else if (velocity.x < -0.01f)
+        if (velocity.x > -0.01f)
         {
             // Left
-            Vector3 scale = transform.localScale;
-            scale.x = -Mathf.Abs(scale.x);
-            transform.localScale = scale;
-
-            animator.SetBool("Left", true);
-            animator.SetBool("Right", true);
-            animator.SetBool("Front", false);
-            animator.SetBool("Back", false);
-            animator.SetFloat("Movement", 1f);
-        }
-        else if (velocity.y > 0.01f)
-        {
-            // Up
-            animator.SetBool("Front", true);
-            animator.SetBool("Back", false);
-            animator.SetBool("Left", false);
-            animator.SetBool("Right", false);
-            animator.SetFloat("Movement", 1f);
-        }
-        else if (velocity.y < -0.01f)
-        {
-            // Down
-            animator.SetBool("Back", true);
-            animator.SetBool("Front", false);
-            animator.SetBool("Left", false);
-            animator.SetBool("Right", false);
-            animator.SetFloat("Movement", 1f);
-        }
-
-        if(velocity.x == 0 && velocity.y == 0 )
-        {
             
-            animator.SetFloat("Movement", 0f);
         }
-        Debug.Log(velocity.x);
+        animator.SetFloat("moveX", movement.x);
+        animator.SetFloat("moveY", movement.y);
 
-            
+        if (velocity != Vector2.zero)
+        {
+            animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            animator.SetBool("isMoving", false);
+        }
+
         
-        
+
+
+
+        findPlayerDirection();
+        setPlayerDirection();
+
+
 
     }
     void attack()
@@ -127,5 +100,65 @@ public class PlayerInput : MonoBehaviour
         }
         Debug.Log("Player Attacked!");
         cooldown.StartCooldown();
+    }
+    void findPlayerDirection()
+    {
+
+        if (movement.x == 0 && movement.y > 0)
+        {
+
+            playerScript.direction = Player.playerDirection.Up;
+            Debug.Log(playerScript.direction);
+        }
+        else if (movement.x == 0 && movement.y < 0)
+        {
+            playerScript.direction = Player.playerDirection.Down;
+            Debug.Log(playerScript.direction);
+        }
+        else if (movement.y == 0 && movement.x < 0)
+        {
+
+            playerScript.direction = Player.playerDirection.Left;
+            Debug.Log(playerScript.direction);
+        }
+        else if (movement.y == 0 && movement.x > 0)
+        {
+
+            playerScript.direction = Player.playerDirection.Right;
+            Debug.Log(playerScript.direction);
+        }
+
+    }
+    void setPlayerDirection()
+    {
+        if (playerScript.direction == Player.playerDirection.Up)
+        {
+
+            animator.SetFloat("moveY", 1f);
+            animator.SetFloat("moveX", 0f);
+        }
+        else if (playerScript.direction == Player.playerDirection.Down)
+        {
+            animator.SetFloat("moveY", -1f);
+            animator.SetFloat("moveX", 0f);
+        }
+        else if (playerScript.direction == Player.playerDirection.Left)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = -Mathf.Abs(scale.x);
+            transform.localScale = scale;
+
+            animator.SetFloat("moveX", -1f);
+            animator.SetFloat("moveY", 0f);
+        }
+        else if (playerScript.direction == Player.playerDirection.Right)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x = Mathf.Abs(scale.x);
+            transform.localScale = scale;
+
+            animator.SetFloat("moveX", 1f);
+            animator.SetFloat("moveY", 0f);
+        }
     }
 }
