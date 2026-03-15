@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     private float moveVertical;
     private Animator animator;
 
+    public bool grounded;
     Vector2 movement;
     Vector2 targetVelocity;
 
@@ -35,9 +36,9 @@ public class PlayerInput : MonoBehaviour
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-
+            
             attack();
 
         }
@@ -45,7 +46,12 @@ public class PlayerInput : MonoBehaviour
 
     void FixedUpdate()
     {
-        MovePlayer();
+        //grounded = Physics2D.BoxCast(transform.position, 0.5f, Vector2.down, 0.05f);
+        if(grounded)
+        {
+            MovePlayer();
+        }
+        
     }
 
     
@@ -79,28 +85,28 @@ public class PlayerInput : MonoBehaviour
             animator.SetBool("isMoving", false);
         }
 
-        
-
-
-
         findPlayerDirection();
         setPlayerDirection();
 
 
 
     }
-    void attack()
-    {
-        if(cooldown.isOnCooldown)
+  void attack()
+  {
+        if (cooldown.isOnCooldown)
         {
-
             Debug.Log("Attack is on cooldown!");
             return;
-            
         }
+
         Debug.Log("Player Attacked!");
+        animator.SetTrigger("isAttacking");
         cooldown.StartCooldown();
-    }
+  }
+  
+    
+    
+
     void findPlayerDirection()
     {
 
@@ -108,27 +114,28 @@ public class PlayerInput : MonoBehaviour
         {
 
             playerScript.direction = Player.playerDirection.Up;
-            Debug.Log(playerScript.direction);
+           
         }
         else if (movement.x == 0 && movement.y < 0)
         {
             playerScript.direction = Player.playerDirection.Down;
-            Debug.Log(playerScript.direction);
+        
         }
         else if (movement.y == 0 && movement.x < 0)
         {
 
             playerScript.direction = Player.playerDirection.Left;
-            Debug.Log(playerScript.direction);
+           
         }
         else if (movement.y == 0 && movement.x > 0)
         {
 
             playerScript.direction = Player.playerDirection.Right;
-            Debug.Log(playerScript.direction);
+          
         }
 
     }
+    
     void setPlayerDirection()
     {
         if (playerScript.direction == Player.playerDirection.Up)
@@ -159,6 +166,13 @@ public class PlayerInput : MonoBehaviour
 
             animator.SetFloat("moveX", 1f);
             animator.SetFloat("moveY", 0f);
+        }
+    }
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Floor"))
+        {
+            Debug.Log("Inside floor");
         }
     }
 }
