@@ -172,7 +172,7 @@ public class PlayerInput : MonoBehaviour
     {
         if (other.CompareTag("Floor"))
         {
-            Debug.Log("Inside floor");
+            //Debug.Log("Inside floor");
         }
     }
 }
