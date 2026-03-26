@@ -46,7 +46,7 @@ public class Node2D : MonoBehaviour
         }
         Debug.Log("Dungeon initialized with " + dimensions.x + "x" + dimensions.y);
         roomDirections.Clear();
-        for (int x = 0; x < critialPathLength; x++)
+        for (int x = 0; x < dimensions.x; x++)
         {
             roomDirections.Add(new List<Vector2Int>());
 
@@ -120,7 +120,9 @@ public class Node2D : MonoBehaviour
                 current += direction;
                 dungeon[current.x][current.y] = length.ToString();
                 roomDirections[current.x][current.y] = direction;
+
                 pathRooms.Add(current);
+
                 if (generateCriticalPath(current, length - 1, path +1))
                 {
                     return true;
@@ -129,6 +131,7 @@ public class Node2D : MonoBehaviour
                 else
                 {
                     dungeon[current.x][current.y] = "0";
+                    pathRooms.RemoveAt(pathRooms.Count - 1);
                     current -= direction;
                 }
             }
