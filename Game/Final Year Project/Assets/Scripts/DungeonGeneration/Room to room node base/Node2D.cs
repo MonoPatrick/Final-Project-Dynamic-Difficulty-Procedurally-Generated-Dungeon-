@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
+using NavMeshPlus.Components;
+using UnityEngine.UI;
 
 public class Node2D : MonoBehaviour
 {
+    public Unity.AI.Navigation.NavMeshSurface Surface2D;
     public Vector2Int dimensions;
     public Vector2Int start;
     public Vector2Int previousRoom;
     private List<List<string>> dungeon = new List<List<string>>(); // example with int cells
+
+    public Transform playerpos;
 
     public GameObject pathTilePrefab;
     public GameObject startTilePrefab;
@@ -15,13 +21,23 @@ public class Node2D : MonoBehaviour
     public GameObject endTilePrefab;
     public GameObject wallTilePrefab;
 
+    public Node nodePrefab;
+    public List<Node> nodeList;
+    public GameObject node;
+
+    public NPC_Controller npc;
+
+    bool canDrawGizmos;
     public int critialPathLength = 13;
     private List<Vector2Int> pathRooms = new List<Vector2Int>();
 
     private List<List<Vector2Int>> roomDirections = new List<List<Vector2Int>>();
     public RoomTemplates templates;
+
+
     void Start()
     {
+        playerpos.position = new Vector3(0, 0, playerpos.position.z);
         initialiseDungeon();
         placeEntrance();
         generateCriticalPath(start, critialPathLength, 0);
@@ -29,7 +45,10 @@ public class Node2D : MonoBehaviour
         overwriteNodes();
         PrintDungeon();
         PlacePathObjects();
+        BuildNavMesh();
+ 
 
+        
     }
 
     void initialiseDungeon()
@@ -254,13 +273,25 @@ public class Node2D : MonoBehaviour
             // Start & End override
             if (cell == "s")
             {
+                playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
                 Instantiate(startTilePrefab, position, Quaternion.identity);
                 
             }
             if (cell == "e")
             {
-                Instantiate(enemyTilePrefab, position, Quaternion.identity);
-                
+                int obstacles;
+                Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0,templates.enemyRooms.Length)], position, Quaternion.identity);
+                Vector3 center = new Vector3(current.x * 5, current.y * 5, 0); // gets the center
+                obstacles = UnityEngine.Random.Range(0, 5);
+                for (int ii = 0; ii < obstacles; ii++)
+                {
+                    Vector3 spawnPos = center + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0); // puts the obstacle in a random area in the room
+                    Instantiate(templates.objects[UnityEngine.Random.Range(0, templates.objects.Length)], spawnPos, Quaternion.identity);
+                }
+                //similar to the obstacles postioning set nodes in the room
+                CreateNodes(center);
+
+
             }
 
             if (cell == "f")
@@ -310,7 +341,7 @@ public class Node2D : MonoBehaviour
             return templates.BottomLeftRooms[0];
         }
 
-        // DEAD ENDS (optional)
+       
         if (exit == Vector2Int.up)
             return templates.TopRooms[0];
 
@@ -324,5 +355,78 @@ public class Node2D : MonoBehaviour
             return templates.RightRooms[0];
 
         return null;
+    }
+    void CreateNodes(Vector3 center)
+    {
+        for (float x = -2; x <= 2; x += 1f)
+        {
+            for (float y = -2; y <= 2; y += 1f)
+            {
+                Vector3 spawnPos = center + new Vector3(x, y, 0);
+                Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
+                nodeList.Add(node);
+            }
+        }
+        CreateConnections();
+    }
+    void CreateConnections()
+    {
+        for(int i = 0; i < nodeList.Count; i++)
+        {
+            for(int ii = i+ 1; ii < nodeList.Count; ii++) {
+                
+                    if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <=1.0f)
+                    {
+                        ConnectNodes(nodeList[i], nodeList[ii]);
+                        ConnectNodes(nodeList[ii], nodeList[i]);
+                    }
+            }
+        }
+        canDrawGizmos = true;
+        SpawnAI();
+
+    }
+
+    void ConnectNodes(Node from, Node to)
+    {
+        if(from == to)
+        {
+            return;
+       
+        } 
+        from.connections.Add(to);
+
+                
+    }
+    void SpawnAI()
+    {
+        Node randNode = nodeList[Random.Range(0, nodeList.Count)];
+
+        NPC_Controller newNPC = Instantiate(npc, new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.2f), Quaternion.identity);
+        newNPC.currentNode = randNode;
+        newNPC.player = playerpos;
+    }
+    private void OnDrawGizmos()
+    {
+        if (!canDrawGizmos || nodeList == null) return;
+
+        Gizmos.color = Color.blue;
+
+        for (int i = 0; i < nodeList.Count; i++)
+        {
+            Node node = nodeList[i];
+
+            foreach (Node connected in node.connections)
+            {
+                if (connected != null)
+                {
+                    Gizmos.DrawLine(node.transform.position, connected.transform.position);
+                }
+            }
+        }
+    }
+    void BuildNavMesh() 
+    { 
+       // surface.BuildNavMesh(); 
     }
 }
