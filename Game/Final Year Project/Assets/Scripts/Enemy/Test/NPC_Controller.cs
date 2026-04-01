@@ -75,7 +75,7 @@ public class NPC_Controller : MonoBehaviour
         
         */
     }
-    
+    /*
     void Patrol()
     {
         if (currentNode == null || AStarManager.instance == null)
@@ -92,7 +92,7 @@ public class NPC_Controller : MonoBehaviour
             path = AStarManager.instance.GeneratePath(currentNode, target);
         }
     }
-    /*
+    
     void Engage()
     {
         if (path.Count == 0)
@@ -132,6 +132,14 @@ public class NPC_Controller : MonoBehaviour
             {
                 currentNode = path[x];
                 path.RemoveAt(x);
+            }
+        }
+        else
+        {
+            Node[] nodes = FindObjectsOfType<Node>();
+            while (path == null || path.Count == 0)
+            {
+                path = AStarManager.instance.GeneratePath(currentNode, nodes[Random.Range(0, nodes.Length)]);
             }
         }
     }

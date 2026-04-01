@@ -358,6 +358,7 @@ public class Node2D : MonoBehaviour
     }
     void CreateNodes(Vector3 center)
     {
+        nodeList.Clear();
         for (float x = -2; x <= 2; x += 1f)
         {
             for (float y = -2; y <= 2; y += 1f)
