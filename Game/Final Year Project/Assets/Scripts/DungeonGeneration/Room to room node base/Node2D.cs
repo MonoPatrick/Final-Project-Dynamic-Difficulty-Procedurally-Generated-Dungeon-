@@ -35,6 +35,7 @@ public class Node2D : MonoBehaviour
     public RoomTemplates templates;
 
 
+
     void Start()
     {
         playerpos.position = new Vector3(0, 0, playerpos.position.z);
@@ -45,20 +46,20 @@ public class Node2D : MonoBehaviour
         overwriteNodes();
         PrintDungeon();
         PlacePathObjects();
-        BuildNavMesh();
- 
+        //BuildNavMesh();
 
-        
+
+
     }
 
     void initialiseDungeon()
     {
 
         dungeon.Clear();
-        for (int x = 0; x < dimensions.x +1; x++)
+        for (int x = 0; x < dimensions.x + 1; x++)
         {
             dungeon.Add(new List<string>());
-            for (int y = 0; y < dimensions.y +1; y++)
+            for (int y = 0; y < dimensions.y + 1; y++)
             {
                 dungeon[x].Add("0"); // initialize cell to 0 (or whatever you want)
             }
@@ -73,19 +74,19 @@ public class Node2D : MonoBehaviour
             {
                 roomDirections[x].Add(Vector2Int.zero);
             }
-                
+
 
         }
     }
 
     void placeEntrance()
     {
-        if (start.x < 0 || start.x >= dimensions.x-1)
+        if (start.x < 0 || start.x >= dimensions.x - 1)
         {
             start.x = UnityEngine.Random.Range(0, dimensions.x);
             return;
         }
-        if (start.y < 0 || start.y >= dimensions.y-1)
+        if (start.y < 0 || start.y >= dimensions.y - 1)
         {
             start.y = UnityEngine.Random.Range(0, dimensions.y);
             return;
@@ -100,7 +101,7 @@ public class Node2D : MonoBehaviour
         {
             return true; //
         }
-        
+
         Vector2Int direction;
 
         int value = UnityEngine.Random.Range(0, 4);
@@ -130,9 +131,9 @@ public class Node2D : MonoBehaviour
         {
             if (
                current.x + direction.x >= 0 &&
-               current.x + direction.x < dimensions.x-1 &&
+               current.x + direction.x < dimensions.x - 1 &&
                current.y + direction.y >= 0 &&
-               current.y + direction.y < dimensions.y-1 &&
+               current.y + direction.y < dimensions.y - 1 &&
                dungeon[current.x + direction.x][current.y + direction.y] == "0"
             )
             {
@@ -142,7 +143,7 @@ public class Node2D : MonoBehaviour
 
                 pathRooms.Add(current);
 
-                if (generateCriticalPath(current, length - 1, path +1))
+                if (generateCriticalPath(current, length - 1, path + 1))
                 {
                     return true;
 
@@ -167,11 +168,11 @@ public class Node2D : MonoBehaviour
         string dungeonAsString = "";
         string roomDirectionsAsString = "";
 
-        for (int y = dimensions.y ; y >= 0; y--) // print top row first
+        for (int y = dimensions.y; y >= 0; y--) // print top row first
         {
             for (int x = 0; x < dimensions.x; x++)
             {
-                    dungeonAsString += $"[{dungeon[x][y]}]";
+                dungeonAsString += $"[{dungeon[x][y]}]";
             }
             dungeonAsString += "\n"; // newline after each row
         }
@@ -220,11 +221,11 @@ public class Node2D : MonoBehaviour
                             dungeon[x][y] = "t";
                             break;
                         case 2:
-                            dungeon[x][y] = "p"; 
+                            dungeon[x][y] = "p";
                             break;
 
                         default:
-                            dungeon[x][y] = "R"; 
+                            dungeon[x][y] = "R";
                             break;
                     }
                 }
@@ -275,12 +276,12 @@ public class Node2D : MonoBehaviour
             {
                 playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
                 Instantiate(startTilePrefab, position, Quaternion.identity);
-                
+
             }
             if (cell == "e")
             {
                 int obstacles;
-                Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0,templates.enemyRooms.Length)], position, Quaternion.identity);
+                Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
                 Vector3 center = new Vector3(current.x * 5, current.y * 5, 0); // gets the center
                 obstacles = UnityEngine.Random.Range(0, 5);
                 for (int ii = 0; ii < obstacles; ii++)
@@ -292,13 +293,14 @@ public class Node2D : MonoBehaviour
                 CreateNodes(center);
 
 
+
             }
 
             if (cell == "f")
             {
                 Instantiate(endTilePrefab, position, Quaternion.identity);
-                
-            }   
+
+            }
         }
     }
     GameObject GetRoomFromTemplates(Vector2Int entry, Vector2Int exit)
@@ -341,7 +343,7 @@ public class Node2D : MonoBehaviour
             return templates.BottomLeftRooms[0];
         }
 
-       
+
         if (exit == Vector2Int.up)
             return templates.TopRooms[0];
 
@@ -365,22 +367,38 @@ public class Node2D : MonoBehaviour
             {
                 Vector3 spawnPos = center + new Vector3(x, y, 0);
                 Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
+                Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.4f);
+
+                foreach (Collider2D hit in hits)
+                {
+                    if (hit.CompareTag("Obstacles"))
+                    {
+                        node.isBlocked = true;
+                        Debug.Log("Node blocked by object at: " + spawnPos);
+                        break;
+                    }
+                }
+
                 nodeList.Add(node);
             }
         }
+
         CreateConnections();
     }
     void CreateConnections()
     {
-        for(int i = 0; i < nodeList.Count; i++)
+        for (int i = 0; i < nodeList.Count; i++)
         {
-            for(int ii = i+ 1; ii < nodeList.Count; ii++) {
-                
-                    if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <=1.0f)
-                    {
-                        ConnectNodes(nodeList[i], nodeList[ii]);
-                        ConnectNodes(nodeList[ii], nodeList[i]);
-                    }
+            for (int ii = i + 1; ii < nodeList.Count; ii++)
+            {
+                if (nodeList[i].isBlocked || nodeList[ii].isBlocked)
+                    continue;
+
+                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 1.0f)
+                {
+                    ConnectNodes(nodeList[i], nodeList[ii]);
+                    ConnectNodes(nodeList[ii], nodeList[i]);
+                }
             }
         }
         canDrawGizmos = true;
@@ -390,14 +408,14 @@ public class Node2D : MonoBehaviour
 
     void ConnectNodes(Node from, Node to)
     {
-        if(from == to)
+        if (from == to)
         {
             return;
-       
-        } 
+
+        }
         from.connections.Add(to);
 
-                
+
     }
     void SpawnAI()
     {
@@ -424,10 +442,12 @@ public class Node2D : MonoBehaviour
                     Gizmos.DrawLine(node.transform.position, connected.transform.position);
                 }
             }
+           
         }
+        
+
     }
-    void BuildNavMesh() 
-    { 
-       // surface.BuildNavMesh(); 
-    }
+
+    
+
 }

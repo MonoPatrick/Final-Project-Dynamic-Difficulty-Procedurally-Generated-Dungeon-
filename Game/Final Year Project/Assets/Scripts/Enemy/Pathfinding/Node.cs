@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
+
     public Node cameFrom;
     public List<Node> connections;
 
     public float gScore;
     public float hScore;
 
+    public bool isBlocked = false;
     public float FScore()
     {
         return gScore + hScore;
@@ -26,4 +28,5 @@ public class Node : MonoBehaviour
             }
         }
     }
+   
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1801488065488485454}
   - component: {fileID: 4064836583461828985}
   - component: {fileID: 794751380758946441}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Pot
   m_TagString: Obstacles
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7158561195474127907}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
