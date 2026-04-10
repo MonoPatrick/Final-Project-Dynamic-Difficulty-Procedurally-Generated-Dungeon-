@@ -483,11 +483,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156042214}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e59b25e075da2445a190a2cbb7cabcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seeker: {fileID: 0}
+  rb: {fileID: 0}
   player: {fileID: 141394802}
   target: {fileID: 0}
   waypoint:
@@ -499,13 +501,18 @@ MonoBehaviour:
   maxX: 1
   minY: -1
   maxY: 1
+  waitTime: 0
   startWaitTime: 2
+  postRankDamage: 0
   preRankDamage: 0
   playerRank: {fileID: 141394803}
   speed: 1
+  enemySpeed: 0
   nextWaypointDistance: 3
+  reachedEndOfPath: 0
   patrolling: 1
   seeking: 0
+  currentWaypoint: 0
   detectionRange: 5
 --- !u!50 &156042219
 Rigidbody2D:
@@ -567,20 +574,41 @@ MonoBehaviour:
   maxSpeed: 1
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
-    serializedVersion: 2
     m_Bits: 4294967295
   centerOffsetCompatibility: NaN
   repathRateCompatibility: NaN
   canSearchCompability: 0
   orientation: 1
   enableRotation: 0
+  simulatedPosition: {x: 0, y: 0, z: 0}
+  simulatedRotation: {x: 0, y: 0, z: 0, w: 0}
+  accumulatedMovementDelta: {x: 0, y: 0, z: 0}
+  velocity2D: {x: 0, y: 0}
+  verticalVelocity: 0
+  seeker: {fileID: 156042222}
+  tr: {fileID: 156042215}
+  rigid: {fileID: 0}
+  rigid2D: {fileID: 156042219}
+  controller: {fileID: 0}
   autoRepath:
     mode: 1
     interval: 0.5
     sensitivity: 10
     maximumInterval: 2
     visualizeSensitivity: 0
+    lastDestination: {x: Infinity, y: Infinity, z: Infinity}
+    lastRepathTime: -Infinity
+  <usingGravity>k__BackingField: 0
+  lastDeltaTime: 0
+  prevFrame: 0
+  prevPosition1: {x: 0, y: 0, z: 0}
+  prevPosition2: {x: 0, y: 0, z: 0}
+  lastDeltaPosition: {x: 0, y: 0}
+  waitingForPathCalculation: 0
   targetCompatibility: {fileID: 0}
+  startHasRun: 0
+  <destination>k__BackingField: {x: Infinity, y: Infinity, z: Infinity}
+  <isStopped>k__BackingField: 0
   maxAcceleration: -2.5
   rotationSpeed: 360
   slowdownDistance: 0.6
@@ -590,6 +618,7 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
+  <reachedEndOfPath>k__BackingField: 0
 --- !u!114 &156042222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,7 +626,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156042214}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 373b52eb9bf8c40f785bb6947a1aee66, type: 3}
   m_Name: 
@@ -611,13 +640,14 @@ MonoBehaviour:
     exactEndPoint: 3
     useRaycasting: 0
     mask:
-      serializedVersion: 2
       m_Bits: 4294967295
     useGraphRaycasting: 0
   traversableTags: -1
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
+  graphMaskCompatibility: -1
+  lastPathID: 0
 --- !u!1 &317358188 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 843033509974095787, guid: 3856efa61110a7b4290cfab328148ff9, type: 3}
@@ -695,13 +725,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a1747bde15b4e9418847ff28c9bb924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcePrefab: {fileID: 8979198087353115966, guid: 3d4acabbfa19dbf409e1c03e876d681f, type: 3}
-  nodes:
-  - {fileID: 1601737273}
-  - {fileID: 1488911046}
-  - {fileID: 1147982758}
-  - {fileID: 1909411461}
-  currentResource: 0
 --- !u!1 &496742069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1785,7 +1808,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603093222}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78396926cbbfc4ac3b48fc5fc34a87d1, type: 3}
   m_Name: 
@@ -1793,10 +1816,11 @@ MonoBehaviour:
   version: 1
   data:
     dataString: UEsDBBQAAAgIAAAAIeyXlU2CgAIAADoFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMFyozAM/ZWMz5sMkJCke9ulabqHtpmmO71wcbAInhibsU2TtJN/X9lAoFkuGElPenqS+SJcmgoyq/Rac/akGJCfI+LO5Meodz7Cie6V3PJP6GLeObOFC6I+5pVartAeOphRJVjNs19yL1xwgMZa8lzpcsX2kChjDZpzKgygSyvr0BJNXyNywtf4zkHOeIoW7vSJp7tgdMFjBtKCHoQGkyC6w2cZR1EL6iDTSRxHi2g+Xa7GYezhtcwELStgrpc+y6xFIsKHSeyyjQgmsSurhOCmJUnsufIiJLQyNbaIAYxTbNozcxoUwPeFdQ0MwS95bsC2DDU933ON2jVZyW/VCFpSc2iYfVBRuzpRPPesmqRP//nHoXfnWpWPXd0wcDVswbPDKz1n1NiB4kPz/XfitTxScaA7Ae8FyGe11qqWDJ1W1w5aG4ju+89ra0kB2aG3N1RvjHXVK34d8GS6nIXL+XS+GgeLdnCuoYuX4pQIXu78GGaNYSuUF9+vCGgc1B9k7xfItHnR6ij9NfBG98NNax0PXBuLrrZl6bjuVK1dKFl5AV1rtU2UluDNbQcVSCrseYNp7O08b3yDsjeeB+ruVFu89XVX5QbizX18ENy4Nup4nZwp1PEJTPFSW8El9KSd4xl1SpSUzboNNelg21rnNBvA9jVn3/eMzALY5dmc0Xm4XEIej3eMMhov2C5iQZizKfGLyCX2ScWmIdrKg1OTfXKJS9f9akZrTSu/+kzT45p/lmogOZe52mYaQL40Ga7EQWMRvKRsxTgKtAVrufTzJl8pESo7AEuviVLf6epkNU37LCmp+IeyzpKSxP9bUuLM18XeaPjgcHTFu2QXcvkHUEsDBBQAAAgIAAAAIeyOLaXnbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSiUFqUlqyWUqimaGFRWqaqW5SSmJKoql5SpJRioFhWoqxUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAAIeyXlU2CgAIAADoFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAAIeyOLaXnbQAAAHgAAAAJACQAAAAAAAAAAAAAAM0CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAhQMAAAAA
-    upgradeData: 
+    upgradeData: []
     file_cachedStartup: {fileID: 0}
-    data_cachedStartup: 
+    data_cachedStartup: []
     cacheStartup: 0
+    graphStructureLocked: []
   showNavGraphs: 1
   showUnwalkableNodes: 0
   debugMode: 0
@@ -1812,14 +1836,41 @@ MonoBehaviour:
   prioritizeGraphs: 0
   prioritizeGraphsLimit: 1
   colorSettings:
-    _SolidColor: {r: 0.11764706, g: 0.4, b: 0.7882353, a: 0.9}
-    _UnwalkableNode: {r: 1, g: 0, b: 0, a: 0.5}
-    _BoundsHandles: {r: 0.29, g: 0.454, b: 0.741, a: 0.9}
-    _ConnectionLowLerp: {r: 0, g: 1, b: 0, a: 0.5}
-    _ConnectionHighLerp: {r: 1, g: 0, b: 0, a: 0.5}
-    _MeshEdgeColor: {r: 0, g: 0, b: 0, a: 0.5}
+    _SolidColor:
+      r: 0.11764706
+      g: 0.4
+      b: 0.7882353
+      a: 0.9
+    _UnwalkableNode:
+      r: 1
+      g: 0
+      b: 0
+      a: 0.5
+    _BoundsHandles:
+      r: 0.29
+      g: 0.454
+      b: 0.741
+      a: 0.9
+    _ConnectionLowLerp:
+      r: 0
+      g: 1
+      b: 0
+      a: 0.5
+    _ConnectionHighLerp:
+      r: 1
+      g: 0
+      b: 0
+      a: 0.5
+    _MeshEdgeColor:
+      r: 0
+      g: 0
+      b: 0
+      a: 0.5
     _AreaColors:
-    - {r: 0, g: 0, b: 0, a: 0}
+    - r: 0
+      g: 0
+      b: 0
+      a: 0
   tagNames:
   - Basic Ground
   - 1
@@ -1859,12 +1910,18 @@ MonoBehaviour:
   maxFrameTime: 10
   batchGraphUpdates: 0
   graphUpdateBatchingInterval: 0.2
+  <lastScanTime>k__BackingField: 0.0001311
+  inGameDebugPath: 
+  graphUpdateRoutineRunning: 0
+  graphUpdatesWorkItemAdded: 0
+  lastGraphUpdate: -9999
   euclideanEmbedding:
     mode: 0
     seed: 0
     pivotPointRoot: {fileID: 0}
     spreadOutCount: 1
   showGraphs: 1
+  nextFreePathID: 1
 --- !u!4 &1603093224
 Transform:
   m_ObjectHideFlags: 0

@@ -126,7 +126,7 @@ public class NPC_Controller : MonoBehaviour
         if (path.Count > 0)
         {
             int x = 0;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(path[x].transform.position.x, path[x].transform.position.y, -2), (speed * panicMultiplier) * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(path[x].transform.position.x, path[x].transform.position.y, -0.5f), (speed * panicMultiplier) * Time.deltaTime);
 
             if (Vector2.Distance(transform.position, path[x].transform.position) < 0.1f)
             {

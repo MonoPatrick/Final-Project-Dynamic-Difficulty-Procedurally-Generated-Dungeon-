@@ -18,12 +18,11 @@ public class Node2D : MonoBehaviour
     public GameObject pathTilePrefab;
     public GameObject startTilePrefab;
     public GameObject enemyTilePrefab;
-    public GameObject endTilePrefab;
+    
     public GameObject wallTilePrefab;
 
     public Node nodePrefab;
     public List<Node> nodeList;
-    public GameObject node;
 
     public NPC_Controller npc;
 
@@ -268,10 +267,26 @@ public class Node2D : MonoBehaviour
 
             if (room != null)
             {
+                
                 Instantiate(room, position, Quaternion.identity);
             }
 
             // Start & End override
+            if (cell == "t")
+            {
+                Instantiate(templates.floor, position, Quaternion.identity);
+               
+            
+
+            }
+            if (cell == "p")
+            {
+                Instantiate(templates.floor, position, Quaternion.identity);
+
+
+
+            }
+
             if (cell == "s")
             {
                 playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
@@ -286,8 +301,8 @@ public class Node2D : MonoBehaviour
                 obstacles = UnityEngine.Random.Range(0, 5);
                 for (int ii = 0; ii < obstacles; ii++)
                 {
-                    Vector3 spawnPos = center + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0); // puts the obstacle in a random area in the room
-                    Instantiate(templates.objects[UnityEngine.Random.Range(0, templates.objects.Length)], spawnPos, Quaternion.identity);
+                   // Vector3 spawnPos = center + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0); // puts the obstacle in a random area in the room
+                    //Instantiate(templates.objects[UnityEngine.Random.Range(0, templates.objects.Length)], spawnPos, Quaternion.identity);
                 }
                 //similar to the obstacles postioning set nodes in the room
                 CreateNodes(center);
@@ -298,7 +313,7 @@ public class Node2D : MonoBehaviour
 
             if (cell == "f")
             {
-                Instantiate(endTilePrefab, position, Quaternion.identity);
+                Instantiate(templates.endTilePrefab, position, Quaternion.identity);
 
             }
         }
@@ -361,9 +376,9 @@ public class Node2D : MonoBehaviour
     void CreateNodes(Vector3 center)
     {
         nodeList.Clear();
-        for (float x = -2; x <= 2; x += 1f)
+        for (float x = -1; x <= 1; x += 1f)
         {
-            for (float y = -2; y <= 2; y += 1f)
+            for (float y = -1; y <= 1; y += 1f)
             {
                 Vector3 spawnPos = center + new Vector3(x, y, 0);
                 Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
@@ -421,9 +436,9 @@ public class Node2D : MonoBehaviour
     {
         Node randNode = nodeList[Random.Range(0, nodeList.Count)];
 
-        NPC_Controller newNPC = Instantiate(npc, new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.2f), Quaternion.identity);
+        NPC_Controller newNPC = Instantiate(npc, new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
         newNPC.currentNode = randNode;
-        newNPC.player = playerpos;
+        
     }
     private void OnDrawGizmos()
     {
@@ -439,7 +454,7 @@ public class Node2D : MonoBehaviour
             {
                 if (connected != null)
                 {
-                    Gizmos.DrawLine(node.transform.position, connected.transform.position);
+                    //Gizmos.DrawLine(node.transform.position, connected.transform.position);
                 }
             }
            
