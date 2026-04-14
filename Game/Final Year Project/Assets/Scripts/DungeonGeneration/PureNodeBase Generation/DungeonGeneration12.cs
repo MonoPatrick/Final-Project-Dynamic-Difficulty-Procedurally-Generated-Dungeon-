@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class DungeonGenerator : MonoBehaviour
 {
-    /*
+    
     public int amountOfRooms = 10;
 
     public RoomNode Generate()
@@ -47,6 +47,6 @@ public class DungeonGenerator : MonoBehaviour
         return "Treasure";
     }
 }
-    */
+    
 
-}
+}*/

@@ -16,6 +16,7 @@ public class RoomTemplates : MonoBehaviour
     public GameObject[] TopLeftRooms;
     public GameObject[] BottomRightRooms;
     public GameObject[] BottomLeftRooms;
+    public GameObject startTilePrefab;
     public GameObject endTilePrefab;
     public GameObject[] enemyRooms;
     public GameObject floor;

@@ -4,8 +4,6 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public NavMeshAgent navAgent;
-    public Transform player;
     public LayerMask groundLayer, playerLayer;
     public float health;
     public float walkPointRange;
@@ -13,46 +11,26 @@ public class Enemy : MonoBehaviour
     public float sightRange;
     public float attackRange;
     public int damage;
-    //public Animator animator;
-    public ParticleSystem hitEffect;
 
-    private Vector3 walkPoint;
-    private bool walkPointSet;
+    //public Animator animator;
     private bool alreadyAttacked;
     private bool takeDamage;
-
+    public bool playerInSightRange;
 
 
 
     private void Awake()
     {
         //animator = GetComponent<Animator>();
-        player = GameObject.Find("Player").transform;
-        navAgent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
-        bool playerInSightRange = Physics2D.OverlapCircle(transform.position, sightRange, playerLayer);
+        playerInSightRange = Physics2D.OverlapCircle(transform.position, sightRange, playerLayer);
         bool playerInAttackRange = Physics2D.OverlapCircle(transform.position, attackRange, playerLayer);
-        if (!playerInSightRange && !playerInAttackRange)
-        {
-            Patroling();
-        }
-        else if (playerInSightRange && !playerInAttackRange)
-        {
-            ChasePlayer();
-        }
-        else if (playerInAttackRange && playerInSightRange)
-        {
-            AttackPlayer();
-        }
-        else if (!playerInSightRange && takeDamage)
-        {
-            ChasePlayer();
-        }
+        
     }
-
+    /*
     private void Patroling()
     {
         if (!walkPointSet)
@@ -112,7 +90,7 @@ public class Enemy : MonoBehaviour
             {
                playerHUD.takeDamage(damage);
             }
-             */
+            
         }
     }
 }
@@ -154,7 +132,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(1.8f);
         Destroy(gameObject);
     }
-
+    */
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -162,4 +140,5 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
     }
+    
 }

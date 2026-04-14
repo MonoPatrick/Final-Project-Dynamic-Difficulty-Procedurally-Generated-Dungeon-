@@ -15,42 +15,47 @@ public class Node2D : MonoBehaviour
 
     public Transform playerpos;
 
-    public GameObject pathTilePrefab;
     public GameObject startTilePrefab;
-    public GameObject enemyTilePrefab;
-    
-    public GameObject wallTilePrefab;
+
 
     public Node nodePrefab;
     public List<Node> nodeList;
 
     public NPC_Controller npc;
 
+    public Player playerParameters;
+
     bool canDrawGizmos;
-    public int critialPathLength = 13;
+    public int critialPathLength;
     private List<Vector2Int> pathRooms = new List<Vector2Int>();
 
     private List<List<Vector2Int>> roomDirections = new List<List<Vector2Int>>();
     public RoomTemplates templates;
 
+    int enemyRooms = 6;
+    int numberOfEnemyRooms = 0;
+
+    int TreasureRooms = 20;
+    int numberOfTreasureRooms = 0;
 
 
     void Start()
     {
-        playerpos.position = new Vector3(0, 0, playerpos.position.z);
         initialiseDungeon();
+        enemyRooms = critialPathLength / 2;
+        playerpos.position = new Vector3(0, 0, playerpos.position.z);
+        
         placeEntrance();
         generateCriticalPath(start, critialPathLength, 0);
         PrintDungeon();
         overwriteNodes();
         PrintDungeon();
         PlacePathObjects();
-        //BuildNavMesh();
-
+       
 
 
     }
-
+   
     void initialiseDungeon()
     {
 
@@ -75,6 +80,30 @@ public class Node2D : MonoBehaviour
             }
 
 
+        }
+        setCriticalPathLength();
+    }
+    void setCriticalPathLength()
+    {
+        if (playerParameters.playerRank == Player.Rank.Rank1)
+        {
+            critialPathLength = 5;
+        }
+        if (playerParameters.playerRank == Player.Rank.Rank2)
+        {
+            critialPathLength = 10;
+        }
+        if (playerParameters.playerRank == Player.Rank.Rank3)
+        {
+            critialPathLength = 15;
+        }
+        if (playerParameters.playerRank == Player.Rank.Rank4)
+        {
+            critialPathLength = 20;
+        }
+        if (playerParameters.playerRank == Player.Rank.Rank5)
+        {
+            critialPathLength = 25;
         }
     }
 
@@ -190,6 +219,7 @@ public class Node2D : MonoBehaviour
     }
     void overwriteNodes()
     {
+   
         for (int x = 0; x < dimensions.x; x++)
         {
             for (int y = 0; y < dimensions.y; y++)
@@ -206,32 +236,65 @@ public class Node2D : MonoBehaviour
                         dungeon[x][y] = "R";
                     }
                 }
+            }
+        }
+
+        for (int x = 0; x < dimensions.x; x++)
+        {
+            for (int y = 0; y < dimensions.y; y++)
+            {
                 //set room types to R transform the room
                 if (dungeon[x][y] == "R")
                 {
-                    int value = UnityEngine.Random.Range(0, 3);
+                    bool placed = false;
 
-                    switch (value)
+                    while (!placed)
                     {
-                        case 0:
-                            dungeon[x][y] = "e";
-                            break;
-                        case 1:
-                            dungeon[x][y] = "t";
-                            break;
-                        case 2:
-                            dungeon[x][y] = "p";
-                            break;
+                        int value = Random.Range(0, 3); // 0, 1, or 2
 
-                        default:
-                            dungeon[x][y] = "R";
-                            break;
+                        switch (value)
+                        {
+                            case 0:
+                                if (numberOfEnemyRooms < enemyRooms)
+                                {
+                                    dungeon[x][y] = "e";
+                                    numberOfEnemyRooms++;
+                                    placed = true;
+                                }
+                                break;
+
+                            case 1:
+                                dungeon[x][y] = "t";
+                                placed = true;
+                                break;
+
+                            case 2:
+                                dungeon[x][y] = "p";
+                                placed = true;
+                                break;
+                        }
                     }
                 }
 
             }
         }
-    }
+        for (int x = 0; x < dimensions.x; x++)
+        {
+            for (int y = 0; y < dimensions.y; y++)
+            {
+                if (numberOfEnemyRooms < enemyRooms)
+                {
+                    if (dungeon[x][y] == "t")
+                    {
+                        dungeon[x][y] = "e";
+                        numberOfEnemyRooms++;
+                    }
+                }
+                
+            }
+        }
+
+      }
     void PlacePathObjects()
     {
         for (int i = 0; i < pathRooms.Count; i++)
@@ -296,6 +359,7 @@ public class Node2D : MonoBehaviour
             if (cell == "e")
             {
                 int obstacles;
+        
                 Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
                 Vector3 center = new Vector3(current.x * 5, current.y * 5, 0); // gets the center
                 obstacles = UnityEngine.Random.Range(0, 5);
@@ -376,13 +440,13 @@ public class Node2D : MonoBehaviour
     void CreateNodes(Vector3 center)
     {
         nodeList.Clear();
-        for (float x = -1; x <= 1; x += 1f)
+        for (float x = -2.0f; x <= 2.0f; x += 1.0f)
         {
-            for (float y = -1; y <= 1; y += 1f)
+            for (float y = -2.0f; y <= 2.0f; y += 1.0f)
             {
                 Vector3 spawnPos = center + new Vector3(x, y, 0);
                 Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
-                Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.4f);
+                Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.1f);
 
                 foreach (Collider2D hit in hits)
                 {
@@ -409,7 +473,7 @@ public class Node2D : MonoBehaviour
                 if (nodeList[i].isBlocked || nodeList[ii].isBlocked)
                     continue;
 
-                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 1.0f)
+                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 1.6f)
                 {
                     ConnectNodes(nodeList[i], nodeList[ii]);
                     ConnectNodes(nodeList[ii], nodeList[i]);
@@ -434,10 +498,20 @@ public class Node2D : MonoBehaviour
     }
     void SpawnAI()
     {
-        Node randNode = nodeList[Random.Range(0, nodeList.Count)];
+        int enemies;
 
-        NPC_Controller newNPC = Instantiate(npc, new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
-        newNPC.currentNode = randNode;
+        enemies = UnityEngine.Random.Range(1, 3);
+        for (int i = 0; i < enemies; i++)
+        {
+            Node randNode = nodeList[Random.Range(0, nodeList.Count)];
+            while(randNode.isBlocked)
+            {
+                randNode = nodeList[Random.Range(0, nodeList.Count)];
+            }
+            NPC_Controller newNPC = Instantiate(npc, new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
+            newNPC.currentNode = randNode;
+        }
+        
         
     }
     private void OnDrawGizmos()

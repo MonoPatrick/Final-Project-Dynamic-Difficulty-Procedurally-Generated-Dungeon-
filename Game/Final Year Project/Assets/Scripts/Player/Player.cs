@@ -16,18 +16,46 @@ public class Player : MonoBehaviour
     public Rank playerRank;
     public playerDirection direction;
 
+    public GameObject heart1;
+    public GameObject heart2;
+    public GameObject heart3;
     public float multiplier;
     // Start is called before the first frame update
     void Start()
     {
         multiplier = 1;
-        playerRank = Rank.Rank1;
+        playerRank = Rank.Rank2;
         direction = playerDirection.Up;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (playerHealth >=3)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(true);
+            heart3.SetActive(true);
+        }
+        else if (playerHealth == 2)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(true);
+            heart3.SetActive(false);
+        }
+        else if (playerHealth >= 1)
+        {
+            heart1.SetActive(true);
+            heart2.SetActive(false);
+            heart3.SetActive(false);
+        }
+        else if (playerHealth <= 0)
+        {
+            heart1.SetActive(false);
+            heart2.SetActive(false);
+            heart3.SetActive(false);
+        }
+
         if (playerRank == Rank.Rank1)
         {
             multiplier = 0.5f;
