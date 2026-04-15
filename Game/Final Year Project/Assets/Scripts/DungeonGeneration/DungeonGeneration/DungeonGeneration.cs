@@ -51,19 +51,19 @@ public class DungeonGeneration : MonoBehaviour
                 {
                     critialPathLength = 5;
                 }
-                if (playerParameters.playerRank == Player.Rank.Rank2)
+                else if (playerParameters.playerRank == Player.Rank.Rank2)
                 {
                     critialPathLength = 10;
                 }
-                if (playerParameters.playerRank == Player.Rank.Rank3)
+                else if (playerParameters.playerRank == Player.Rank.Rank3)
                 {
                     critialPathLength = 15;
                 }
-                if (playerParameters.playerRank == Player.Rank.Rank4)
+                else if (playerParameters.playerRank == Player.Rank.Rank4)
                 {
                     critialPathLength = 20;
                 }
-                if (playerParameters.playerRank == Player.Rank.Rank5)
+                else if (playerParameters.playerRank == Player.Rank.Rank5)
                 {
                     critialPathLength = 25;
                 }

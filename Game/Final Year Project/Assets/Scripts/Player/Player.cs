@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         multiplier = 1;
-        playerRank = Rank.Rank2;
+        
         direction = playerDirection.Up;
     }
 
@@ -75,6 +75,15 @@ public class Player : MonoBehaviour
         if (playerRank == Rank.Rank5)
         {
             multiplier = 2f;
+        }
+
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            Debug.Log("Collided with an enemy!");
+            // Perform action here
         }
 
     }

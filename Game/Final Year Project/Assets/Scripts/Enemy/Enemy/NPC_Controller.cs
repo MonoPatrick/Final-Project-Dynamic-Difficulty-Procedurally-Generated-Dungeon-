@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,16 +10,17 @@ public class NPC_Controller : MonoBehaviour
     public int curHealth;
     public int panicMultiplier = 1;
 
-
+    
     public Node currentNode;
     public List<Node> path = new List<Node>();
 
     public LayerMask groundLayer, playerLayer;
     public float attackRange;
+    public float distance;
     bool isAttacking = false;
 
 
-    NPCPatrol states;
+   public NPC_States states;
     public enum StateMachine
     {
         Patrol,
@@ -62,8 +63,8 @@ public class NPC_Controller : MonoBehaviour
                 break;
         }
         float dist = Vector2.Distance(transform.position, player.position);
-        bool playerSeen = dist < 2.0f;
-        bool playerAttackRange = dist < 0.8f;
+        bool playerSeen = dist < distance;
+        bool playerAttackRange = dist < attackRange;
 
 
         if (!playerSeen && !playerAttackRange && currentState != StateMachine.Patrol && curHealth > (maxHealth * 20) / 100)
@@ -71,9 +72,7 @@ public class NPC_Controller : MonoBehaviour
             currentState = StateMachine.Patrol;
             path.Clear();
         }
-        
-        
-        
+
         else if (playerSeen && !playerAttackRange && currentState != StateMachine.Engage && curHealth > (maxHealth * 20) / 100)
         {
             currentState = StateMachine.Engage;
@@ -90,14 +89,14 @@ public class NPC_Controller : MonoBehaviour
             currentState = StateMachine.Evade;
             path.Clear();
         }
-       // CreatePath();
+        // CreatePath();
         //attack();
-        Debug.Log(isAttacking);
+        //Debug.Log(isAttacking);
     }
 
-    
-    
-    
+
+
+
     private void OnDrawGizmos()
     {
         if (path == null || path.Count == 0)
@@ -112,6 +111,5 @@ public class NPC_Controller : MonoBehaviour
         }
     }
 
-   
+
 }
-*/

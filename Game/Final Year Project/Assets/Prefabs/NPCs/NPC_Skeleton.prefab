@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3764261061265808950}
   - component: {fileID: 5153261109888816281}
-  - component: {fileID: 9194707096884657224}
+  - component: {fileID: 8994897807630058770}
   - component: {fileID: 8398141213661430820}
+  - component: {fileID: -3642667731351815636}
   - component: {fileID: 7720415290778119453}
   - component: {fileID: -5164101022178104312}
   m_Layer: 3
-  m_Name: slime_attacked_0
+  m_Name: NPC_Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,9 +31,9 @@ Transform:
   m_GameObject: {fileID: 5177126435386268519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.540344, y: 8.158885, z: 0}
-  m_LocalScale: {x: 2.6, y: 2.6, z: 2.6}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.13, y: 0.18, z: 0.13}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 54588384, guid: d4103a367d856d344bfd1832a4796fcb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9c27a9551354a1045910c40edf166c10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90,31 +91,114 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9194707096884657224
+--- !u!114 &8994897807630058770
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5177126435386268519}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a8b04ba095d775448a5ba50dae1069d, type: 3}
+  m_Script: {fileID: 11500000, guid: 14aed789791f62545836efbc436eb734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayer:
+  projectilePrefab: {fileID: 641126579491588560, guid: 85b979b45abc6c449816e8d428816801, type: 3}
+  Target: {fileID: 0}
+  npc: {fileID: -3642667731351815636}
+  shootRate: 2.13
+  projectileMaxMoveSpeed: 20
+  projectileMaxHeight: 0.1
+  projectileSpeedAnimationCurve:
     serializedVersion: 2
-    m_Bits: 0
-  playerLayer:
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.99391145
+      outSlope: -0.99391145
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5014529
+      value: 0.5016002
+      inSlope: 0.0028965771
+      outSlope: 0.0028965771
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.9997046
+      outSlope: 0.9997046
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  trajectoryAnimationCurve:
     serializedVersion: 2
-    m_Bits: 8
-  health: 0
-  walkPointRange: 0
-  timeBetweenAttacks: 0
-  sightRange: 1.53
-  attackRange: 0.36
-  damage: 0
-  playerInSightRange: 0
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: -0.012341483
+      outSlope: -0.012341483
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11729623
+    - serializedVersion: 3
+      time: 1
+      value: 0.030660383
+      inSlope: -1.9386792
+      outSlope: -1.9386792
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  axisCorrectionAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &8398141213661430820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,10 +222,26 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackRange: 0.32
+  attackRange: 3
+  distance: 3
+  states: {fileID: -3642667731351815636}
   currentState: 0
   player: {fileID: 0}
   speed: 3
+--- !u!114 &-3642667731351815636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177126435386268519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e165f48188798ae4f8db434ddd35d58d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyController: {fileID: 8398141213661430820}
+  isAttacking: 0
 --- !u!114 &7720415290778119453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,11 +292,11 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
+    oldSize: {x: 3.18, y: 3.4}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.17, y: 0.17}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0

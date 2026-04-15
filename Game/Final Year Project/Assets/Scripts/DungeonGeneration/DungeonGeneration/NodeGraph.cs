@@ -9,7 +9,7 @@ public class NodeGraph : MonoBehaviour
     public List<Node> nodeList;
 
 
-    public NPC_Controller npc;
+    public NPC_Controller[] npcs;
 
     bool canDrawGizmos;
 
@@ -85,7 +85,9 @@ public class NodeGraph : MonoBehaviour
             {
                 randNode = nodeList[Random.Range(0, nodeList.Count)];
             }
-            NPC_Controller newNPC = Instantiate(npc, new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
+            int randEnemy;
+            randEnemy = Random.Range(0, npcs.Length);
+            NPC_Controller newNPC = Instantiate(npcs[1], new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
             newNPC.currentNode = randNode;
         }
 

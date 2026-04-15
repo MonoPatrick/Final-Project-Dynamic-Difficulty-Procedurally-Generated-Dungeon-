@@ -8,6 +8,7 @@ TagManager:
   - Room
   - Obstacles
   - End
+  - Projectile
   layers:
   - Default
   - TransparentFX
