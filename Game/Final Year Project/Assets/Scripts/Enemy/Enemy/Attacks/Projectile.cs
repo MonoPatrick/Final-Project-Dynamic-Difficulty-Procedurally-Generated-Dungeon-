@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
     private float moveSpeed;
     private float maxMoveSpeed;
     private float trajectoryMaxRelativeHeight;
-    private float distanceToTargetToDestroyProjectile = 0.2f;
+    private float distanceToTargetToDestroyProjectile = 0.3f;
 
     private AnimationCurve trajectoryAnimationCurve;
     private AnimationCurve axisCorrectionAnimationCurve;
@@ -89,8 +89,8 @@ public class Projectile : MonoBehaviour
         if (nextPositionYNormalized >= 1f)
         {
 
-            Destroy(gameObject);
-            return;
+            
+           
         }
 
         float nextPositionYCorrectionNormalized = axisCorrectionAnimationCurve.Evaluate(nextPositionXNormalized);
@@ -125,8 +125,8 @@ public class Projectile : MonoBehaviour
         if (nextPositionXNormalized >= 1f)
         {
             
-            Destroy(gameObject);
-            return;
+            
+            
         }
 
         float nextPositionXCorrectionNormalized = axisCorrectionAnimationCurve.Evaluate(nextPositionYNormalized);

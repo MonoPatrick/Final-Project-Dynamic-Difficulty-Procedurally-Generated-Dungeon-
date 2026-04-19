@@ -14,32 +14,32 @@ public class NodeGraph : MonoBehaviour
     bool canDrawGizmos;
 
     public void CreateNodes(Vector3 center)
-           {
-                nodeList.Clear();
-                for (float x = -1.5f; x <= 1.5f; x += 0.75f)
+    {
+        nodeList.Clear();
+        for (float x = -2.0f; x <= 2.0f; x += 1.0f)
+        {
+            for (float y = -2.0f; y <= 2.0f; y += 1.0f)
+            {
+                Vector3 spawnPos = center + new Vector3(x, y, 0);
+                Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
+                Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.2f);
+
+                foreach (Collider2D hit in hits)
                 {
-                    for (float y = -1.5f; y <= 1.5f; y += 0.75f)
+                    if (hit.CompareTag("Obstacles"))
                     {
-                        Vector3 spawnPos = center + new Vector3(x, y, 0);
-                        Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
-                        Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.2f);
-
-                        foreach (Collider2D hit in hits)
-                        {
-                            if (hit.CompareTag("Obstacles"))
-                            {
-                                node.isBlocked = true;
-                                Debug.Log("Node blocked by object at: " + spawnPos);
-                                break;
-                            }
-                        }
-
-                        nodeList.Add(node);
+                        node.isBlocked = true;
+                        Debug.Log("Node blocked by object at: " + spawnPos);
+                        break;
                     }
                 }
 
-                CreateConnections();
-           }
+                nodeList.Add(node);
+            }
+        }
+
+        CreateConnections();
+    }
 
     void CreateConnections()
     {
@@ -50,7 +50,7 @@ public class NodeGraph : MonoBehaviour
                 if (nodeList[i].isBlocked || nodeList[ii].isBlocked)
                     continue;
 
-                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 1.2f)
+                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 1.5f) // set connections 
                 {
                     ConnectNodes(nodeList[i], nodeList[ii]);
                     ConnectNodes(nodeList[ii], nodeList[i]);
@@ -87,7 +87,7 @@ public class NodeGraph : MonoBehaviour
             }
             int randEnemy;
             randEnemy = Random.Range(0, npcs.Length);
-            NPC_Controller newNPC = Instantiate(npcs[1], new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
+            NPC_Controller newNPC = Instantiate(npcs[randEnemy], new Vector3(randNode.transform.position.x, randNode.transform.position.y, -0.01f), Quaternion.identity);
             newNPC.currentNode = randNode;
         }
 

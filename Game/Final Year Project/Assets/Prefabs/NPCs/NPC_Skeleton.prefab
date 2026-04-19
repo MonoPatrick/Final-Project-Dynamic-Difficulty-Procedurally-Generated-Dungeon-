@@ -106,26 +106,26 @@ MonoBehaviour:
   projectilePrefab: {fileID: 641126579491588560, guid: 85b979b45abc6c449816e8d428816801, type: 3}
   Target: {fileID: 0}
   npc: {fileID: -3642667731351815636}
-  shootRate: 2.13
-  projectileMaxMoveSpeed: 20
-  projectileMaxHeight: 0.1
+  baseShootRate: 1
+  baseProjectileMaxMoveSpeed: 5
+  projectileMaxHeight: 0.81
   projectileSpeedAnimationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.99391145
-      outSlope: -0.99391145
+      inSlope: -0.19606483
+      outSlope: -0.19606483
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.5014529
-      value: 0.5016002
-      inSlope: 0.0028965771
-      outSlope: 0.0028965771
+      time: 0.49754667
+      value: 0.9024486
+      inSlope: -0.0009573251
+      outSlope: -0.0009573251
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -133,8 +133,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.9997046
-      outSlope: 0.9997046
+      inSlope: 0.19415018
+      outSlope: 0.19415018
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  curHealth: 0
+  curHealth: 0.06
   panicMultiplier: 1
   currentNode: {fileID: 0}
   path: []
@@ -223,7 +223,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   attackRange: 3
-  distance: 3
+  distance: 4
+  baseSpeed: 1
+  baseMaxHealth: 100
   states: {fileID: -3642667731351815636}
   currentState: 0
   player: {fileID: 0}

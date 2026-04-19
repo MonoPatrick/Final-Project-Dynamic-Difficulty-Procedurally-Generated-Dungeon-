@@ -12,6 +12,7 @@ public class DungeonGenerator : MonoBehaviour
         dungeonGeneration.initialiseDungeon();
         dungeonGeneration.placeEntrance();
         dungeonGeneration.generateCriticalPath(dungeonGeneration.start, dungeonGeneration.critialPathLength, 0);
+        dungeonGeneration.generateBranches();
         dungeonGeneration.PrintDungeon();
         roomManager.overwriteNodes();
         dungeonGeneration.PrintDungeon();

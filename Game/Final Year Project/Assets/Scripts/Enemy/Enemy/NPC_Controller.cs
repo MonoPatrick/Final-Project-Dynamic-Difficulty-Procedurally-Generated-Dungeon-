@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class NPC_Controller : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public int curHealth;
+    public float maxHealth = 100f;
+    public float curHealth;
     public int panicMultiplier = 1;
 
     
@@ -19,8 +19,12 @@ public class NPC_Controller : MonoBehaviour
     public float distance;
     bool isAttacking = false;
 
+    private DynamicDifficultyAdjustment DDA;
 
-   public NPC_States states;
+    public float baseSpeed;
+    public float baseMaxHealth = 100f;
+
+    public NPC_States states;
     public enum StateMachine
     {
         Patrol,
@@ -33,15 +37,20 @@ public class NPC_Controller : MonoBehaviour
 
     public Transform player;
 
-    public float speed = 1f;
+    public float speed;
 
     private void Start()
     {
+        baseSpeed = 1.5f;
         currentState = StateMachine.Patrol;
         curHealth = maxHealth;
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+        if (DDA == null)
+        {
+            DDA = GameObject.FindGameObjectWithTag("Player").GetComponent<DynamicDifficultyAdjustment>();
         }
     }
 
@@ -92,6 +101,8 @@ public class NPC_Controller : MonoBehaviour
         // CreatePath();
         //attack();
         //Debug.Log(isAttacking);
+        enemyDifficultyChange();
+
     }
 
 
@@ -109,6 +120,17 @@ public class NPC_Controller : MonoBehaviour
                 Gizmos.DrawLine(path[i].transform.position, path[i - 1].transform.position);
             }
         }
+    }
+    private void enemyDifficultyChange()
+    {
+        if(DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank3 || DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank4 || DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
+        {
+            speed = DDA.difficulty * baseSpeed;
+        }
+        
+
+        maxHealth = DDA.difficulty * baseMaxHealth;
+        
     }
 
 

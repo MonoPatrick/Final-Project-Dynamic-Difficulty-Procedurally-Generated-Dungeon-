@@ -21,7 +21,9 @@ public class RoomTemplates : MonoBehaviour
     public GameObject[] enemyRooms;
     public GameObject floor;
     public GameObject[] objects;
-
+    public GameObject[] test;
+    public GameObject TopBottomOpenTop;
+    public GameObject TopBottomOpenBottom;
 
 
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
@@ -23,7 +23,7 @@ public class Node2D : MonoBehaviour
 
     public NPC_Controller npc;
 
-    public Player playerParameters;
+    public DynamicDifficultyAdjustment DDA;
 
     bool canDrawGizmos;
     public int critialPathLength;
@@ -38,7 +38,7 @@ public class Node2D : MonoBehaviour
     int TreasureRooms = 20;
     int numberOfTreasureRooms = 0;
 
-
+    '
     void Start()
     {
         initialiseDungeon();
@@ -85,23 +85,23 @@ public class Node2D : MonoBehaviour
     }
     void setCriticalPathLength()
     {
-        if (playerParameters.playerRank == Player.Rank.Rank1)
+        if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
         {
             critialPathLength = 5;
         }
-        if (playerParameters.playerRank == Player.Rank.Rank2)
+        if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
         {
             critialPathLength = 10;
         }
-        if (playerParameters.playerRank == Player.Rank.Rank3)
+        if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
         {
             critialPathLength = 15;
         }
-        if (playerParameters.playerRank == Player.Rank.Rank4)
+        if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
         {
             critialPathLength = 20;
         }
-        if (playerParameters.playerRank == Player.Rank.Rank5)
+        if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
         {
             critialPathLength = 25;
         }
@@ -540,3 +540,4 @@ public class Node2D : MonoBehaviour
     
 
 }
+*/

@@ -7,8 +7,10 @@ public class Shooter : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform Target;
     [SerializeField] NPC_States npc;
-    [SerializeField] private float shootRate;
-    [SerializeField] private float projectileMaxMoveSpeed;
+    [SerializeField] private float baseShootRate;
+    private float shootRate;
+    [SerializeField] private float baseProjectileMaxMoveSpeed;
+    private float projectileMaxMoveSpeed;
     [SerializeField] private float projectileMaxHeight;
     [SerializeField] private AnimationCurve projectileSpeedAnimationCurve;
     private float shootTime;
@@ -17,16 +19,25 @@ public class Shooter : MonoBehaviour
     //animations
     [SerializeField] private AnimationCurve trajectoryAnimationCurve;
     [SerializeField] private AnimationCurve axisCorrectionAnimationCurve;
+
+    private DynamicDifficultyAdjustment DDA;
     void Start()
     {
+        shootRate = baseShootRate;
+        projectileMaxMoveSpeed = baseProjectileMaxMoveSpeed;
         if (Target == null)
         {
             Target = GameObject.FindGameObjectWithTag("Player").transform;
         }
+        if (DDA == null)
+        {
+            DDA = GameObject.FindGameObjectWithTag("Player").GetComponent<DynamicDifficultyAdjustment>();
+        }
     }
     void Update()
     {
-        if(npc.isAttacking)
+        difficultyAdjustment();
+        if (npc.isAttacking)
         {
             shootTime -= Time.deltaTime;  //once the shoot time is set to shootrate time.deltatime
                                           //till be subratacted until it reaches 0 which will
@@ -44,5 +55,15 @@ public class Shooter : MonoBehaviour
         
 
 
+    }
+    void difficultyAdjustment()
+    {
+        if (DDA == null) return;
+
+        if (DDA.playerRank >= DynamicDifficultyAdjustment.Rank.Rank3)
+        {
+            shootRate = baseShootRate * DDA.difficulty;
+            projectileMaxMoveSpeed = baseProjectileMaxMoveSpeed * DDA.difficulty;
+        }
     }
 }
