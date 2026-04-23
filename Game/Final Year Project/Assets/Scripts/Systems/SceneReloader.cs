@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class SceneReloader : MonoBehaviour
 {
     string currentSceneName;
+    bool clicked;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,14 +15,19 @@ public class SceneReloader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //if clicked == true)
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "End")
         {
-            currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
+            sceneReload();
         }
+    }
+
+    public void sceneReload()
+    {
+        currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
     }
 }

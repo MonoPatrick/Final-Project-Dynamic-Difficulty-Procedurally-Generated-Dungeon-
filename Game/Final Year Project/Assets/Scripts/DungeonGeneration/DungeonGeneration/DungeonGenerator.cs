@@ -9,14 +9,29 @@ public class DungeonGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dungeonGeneration.initialiseDungeon();
-        dungeonGeneration.placeEntrance();
-        dungeonGeneration.generateCriticalPath(dungeonGeneration.start, dungeonGeneration.critialPathLength, 0);
-        dungeonGeneration.generateBranches();
+        bool success = false;
+
+        while (!success)
+        {
+            dungeonGeneration.initialiseDungeon();
+            dungeonGeneration.placeEntrance();
+            success = dungeonGeneration.generateCriticalPath(dungeonGeneration.start, dungeonGeneration.critialPathLength, 0);
+            
+        }
+        success = false;
+
+       
+        //success = dungeonGeneration.GenerateBranch();
+        
+
+
+
         dungeonGeneration.PrintDungeon();
         roomManager.overwriteNodes();
+        dungeonGeneration.generateBranches();
         dungeonGeneration.PrintDungeon();
         roomManager.PlacePathObjects();
+
     }
 
 

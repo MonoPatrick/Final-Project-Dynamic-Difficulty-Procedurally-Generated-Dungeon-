@@ -10,16 +10,21 @@ public class DungeonGeneration : MonoBehaviour
     public int critialPathLength;
 
     public List<List<string>> dungeon = new List<List<string>>(); // example with int cells
-    public List<Vector2Int> pathRooms = new List<Vector2Int>();
+    public List<Vector2Int> criticalPathRooms = new List<Vector2Int>();
+    public List<List<Vector2Int>> branchPaths = new List<List<Vector2Int>>();
     public List<List<Vector2Int>> roomDirections = new List<List<Vector2Int>>();
     public Vector2Int previousRoom;
     //difficulty
     public DynamicDifficultyAdjustment DDA;
 
     //branched paths
-    int branches = 0;
-    Vector2Int branchLength; //= new Vector2Int(2, 5);
+    public int branches;
+    Vector2Int branchLength = new Vector2Int(3, 5);
     public List<Vector2Int> branchCandidates;
+
+
+    int keyRoom = 0;
+    int availableKeyRoom = 1;
 
     public void initialiseDungeon()
     {
@@ -52,26 +57,30 @@ public class DungeonGeneration : MonoBehaviour
 
     public void setCriticalPathLength()
     {
-        if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
+        
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
         {
             critialPathLength = 5;
         }
-        else if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
         {
             critialPathLength = 10;
         }
-        else if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
         {
             critialPathLength = 15;
         }
-        else if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
         {
             critialPathLength = 20;
         }
-        else if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
         {
             critialPathLength = 25;
         }
+       
+
+        Debug.Log("Critical Path Length set to: " + critialPathLength);
     }
 
     public void placeEntrance()
@@ -87,8 +96,8 @@ public class DungeonGeneration : MonoBehaviour
             return;
         }
         dungeon[start.x][start.y] = "s";
-        pathRooms.Clear();
-        pathRooms.Add(start);
+        criticalPathRooms.Clear();
+        criticalPathRooms.Add(start);
     }
 
     public bool generateCriticalPath(Vector2Int current, int length, int path)
@@ -125,30 +134,33 @@ public class DungeonGeneration : MonoBehaviour
         //
         for (int i = 0; i < 4; i++)
         {
+            Vector2Int next = current + direction;
             if (
                 current.x + direction.x >= 0 && current.x + direction.x < dimensions.x - 1 &&
                 current.y + direction.y >= 0 && current.y + direction.y < dimensions.y - 1 &&
                 dungeon[current.x + direction.x][current.y + direction.y] == "0"
             )
             {
-                current += direction;
-                dungeon[current.x][current.y] = length.ToString();
-                branchCandidates.Add(current);
+                
+                
+                dungeon[next.x][next.y] = length.ToString();
+                branchCandidates.Add(next);
+               
                 //roomDirections[current.x][current.y] = direction;
 
-                pathRooms.Add(current);
+                criticalPathRooms.Add(next);
 
-                if (generateCriticalPath(current, length - 1, path + 1))
+                if (generateCriticalPath(next, length - 1, path + 1))
                 {
                     return true;
 
                 }
                 else
                 {
-                    dungeon[current.x][current.y] = "0";
-                    pathRooms.RemoveAt(pathRooms.Count - 1);
-                    branchCandidates.Remove(current);
-                    current -= direction;
+                    dungeon[next.x][next.y] = "0";
+                    criticalPathRooms.RemoveAt(criticalPathRooms.Count - 1);
+                    branchCandidates.Remove(next);
+                    
                 }
             }
 
@@ -159,6 +171,115 @@ public class DungeonGeneration : MonoBehaviour
 
         return false;
     }
+
+    public List<Vector2Int> GenerateBranch1(Vector2Int start, int length)
+    {
+        List<Vector2Int> branch = new List<Vector2Int>();
+        Vector2Int current = start;
+
+        for (int i = 0; i < length; i++)
+        {
+            bool placed = false;
+            Vector2Int direction = Vector2Int.zero;
+
+            int value = UnityEngine.Random.Range(0, 4);
+
+            switch (value)
+            {
+                // sets the starting direction of the dungeon using the random value generated
+                case 0:
+                    direction = Vector2Int.up; // up == (0,1)
+                    break;
+                case 1:
+                    direction = Vector2Int.right; // right == (1,0)
+                    break;
+                case 2:
+                    direction = Vector2Int.down; // down  == (0,-1)
+                    break;
+                case 3:
+                    direction = Vector2Int.left; // left == (-1,0)
+                    break;
+                default:
+                    direction = Vector2Int.up;
+                    break;
+            }
+
+            Vector2Int next = current + direction;
+
+            if (
+                current.x + direction.x >= 0 && current.x + direction.x < dimensions.x - 1 &&
+                current.y + direction.y >= 0 && current.y + direction.y < dimensions.y - 1 &&
+                dungeon[next.x][next.y] == "0" && IsValidBranchTile(next)
+            )
+            {
+                
+
+                dungeon[next.x][next.y] = "B";// B = branch
+                if (i == 0)
+                {
+                    dungeon[next.x][next.y] = "B0"; // B0 = start of branch
+                }
+                if (i == length - 1)
+                {
+                    dungeon[next.x][next.y] = "k" + i.ToString(); // B0 = start of branch
+                }
+                branch.Add(next);
+
+                current = next;
+                placed = true;
+                break;
+            }
+            if (!placed)
+            {
+                // failed to place this step whole branch fails
+                return new List<Vector2Int>();
+            }
+
+
+
+
+        }
+
+        return branch;
+    }
+    bool IsValidBranchTile(Vector2Int pos)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2Int direction = Vector2Int.zero;
+
+            switch (i)
+            {
+                case 0: 
+                    direction = Vector2Int.up; 
+                    break;
+                case 1:
+                    direction = Vector2Int.right; 
+                    break;
+                case 2: 
+                    direction = Vector2Int.down; 
+                    break;
+                case 3: 
+                    direction = Vector2Int.left; 
+                    break;
+            }
+
+            Vector2Int check = pos + direction;
+
+            if (check.x < 0 || check.x >= dimensions.x ||
+                check.y < 0 || check.y >= dimensions.y)
+                continue;
+
+
+            if (dungeon[check.x][check.y] == "s" || dungeon[check.x][check.y] == "f")
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void PrintDungeon()
     {
         string dungeonAsString = "";
@@ -185,26 +306,123 @@ public class DungeonGeneration : MonoBehaviour
         Debug.Log(dungeonAsString);
         Debug.Log(roomDirectionsAsString);
     }
-    public void generateBranches()
+    public bool generateBranches()
     {
+        branchPaths.Clear();
+
+        branchCandidates.Remove(criticalPathRooms[0]);
+        branchCandidates.Remove(criticalPathRooms[criticalPathRooms.Count - 1]);
+
         int branchCreated = 0;
-        Vector2Int candidate;
-        while(branchCreated < branches && branchCreated < branchCandidates.Count)
+        int attempts = 0;
+
+        while (branchCreated < branches && branchCandidates.Count > 0 && attempts < branches * 5)
         {
-            candidate = branchCandidates[Random.Range(0, branchCandidates.Count)];
-            if (generateCriticalPath(candidate, Random.Range(branchLength.x, branchLength.y), 0))
+            attempts++;
+
+            int index = Random.Range(0, branchCandidates.Count);
+            Vector2Int start = branchCandidates[index];
+            branchCandidates.RemoveAt(index);
+
+            List<Vector2Int> branch = new List<Vector2Int>();
+
+            int targetLength = Random.Range(branchLength.x, branchLength.y + 1);
+
+            if (GenerateBranch(start, targetLength, branch))
             {
+                branchPaths.Add(branch);
                 branchCreated++;
             }
-            else 
-            {
-                branchCandidates.Remove(candidate);
-            }
-
-
-            
         }
+
+        return branchCreated == branches;
+    }
+    public bool GenerateBranch(Vector2Int current, int length, List<Vector2Int> branch)
+    {
+        if (length == 0)
+            return true;
+
+        Vector2Int direction = Vector2Int.zero;
+
+        int value = UnityEngine.Random.Range(0, 4);
+
+        switch (value)
+        {
+            // sets the starting direction of the dungeon using the random value generated
+            case 0:
+                direction = Vector2Int.up; // up == (0,1)
+                break;
+            case 1:
+                direction = Vector2Int.right; // right == (1,0)
+                break;
+            case 2:
+                direction = Vector2Int.down; // down  == (0,-1)
+                break;
+            case 3:
+                direction = Vector2Int.left; // left == (-1,0)
+                break;
+            default:
+                direction = Vector2Int.up;
+                break;
+        }
+
+        int startDir = Random.Range(0, 4);
+
+        for (int i = 0; i < 4; i++)
+        {
+            //Vector2Int direction = directions[(startDir + i) % 4];
+            Vector2Int next = current + direction;
+
+            if (
+                next.x >= 0 && next.x < dimensions.x - 1 &&
+                next.y >= 0 && next.y < dimensions.y - 1 &&
+                dungeon[next.x][next.y] == "0" &&
+                IsValidBranchTile(next)
+            )
+            {
+                dungeon[next.x][next.y] = "B";
+
+                if (length == 1)
+                {
+                    if (keyRoom != availableKeyRoom)
+                    {
+                        dungeon[next.x][next.y] = "BK"; // Branch End
+                        keyRoom += 1;
+                    }
+                    
+                }
+                else if (branch.Count == 0)
+                {
+                    
+                    dungeon[next.x][next.y] = "B0"; // Branch Start
+                }
+                else
+                {
+                    dungeon[next.x][next.y] = "B";  // Middle
+                }
+
+                branch.Add(next);
+
+                if (GenerateBranch(next, length - 1, branch))
+                    return true;
+
+                // backtrack
+                dungeon[next.x][next.y] = "0";
+                branch.RemoveAt(branch.Count - 1);
+
+            }
+            direction = new Vector2Int(-direction.y, direction.x); // counter-clockwise
+        }
+       
+
+        return false;
     }
 
 
 }
+
+    
+
+
+
+ 

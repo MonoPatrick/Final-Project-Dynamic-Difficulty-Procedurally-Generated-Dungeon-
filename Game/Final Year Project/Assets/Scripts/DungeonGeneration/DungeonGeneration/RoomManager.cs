@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,13 +30,13 @@ public class RoomManager : MonoBehaviour
     }
     public void overwriteNodes()
     {
-
+        
         for (int x = 0; x < dungeonGeneration.dimensions.x; x++)
         {
             for (int y = 0; y < dungeonGeneration.dimensions.y; y++)
             {
                 string cell = dungeonGeneration.dungeon[x][y];
-                if (cell != "0" && cell != "s")
+                if (cell != "0" && cell != "s" && cell != "B" && cell != "B0")
                 {
                     if (cell == "f")
                     {
@@ -105,13 +105,75 @@ public class RoomManager : MonoBehaviour
             }
         }
 
-        Vector2Int endRoom = dungeonGeneration.pathRooms[dungeonGeneration.pathRooms.Count - 1];
+        Vector2Int endRoom = dungeonGeneration.criticalPathRooms[dungeonGeneration.criticalPathRooms.Count - 1];
         dungeonGeneration.dungeon[endRoom.x][endRoom.y] = "f";
 
 
     }
-    GameObject GetRoomFromTemplates(Vector2Int entry, Vector2Int exit)
+    GameObject GetRoomFromTemplates(Vector2Int entry, Vector2Int exit, Vector2Int extra, Vector2Int current )
     {
+        if (dungeonGeneration.dungeon[current.x][current.y] == "0")
+        {
+            return templates.barricade;
+        }
+            if (dungeonGeneration.dungeon[current.x][current.y] == "B0")
+        {
+            //return templates.test[0];
+        }
+
+        if (extra != Vector2Int.zero)
+        {
+            // 3 path rooms 
+            if ((entry == Vector2Int.up || exit == Vector2Int.up || extra == Vector2Int.up) &&
+                (entry == Vector2Int.left || exit == Vector2Int.left || extra == Vector2Int.left) &&
+                (entry == Vector2Int.right || exit == Vector2Int.right || extra == Vector2Int.right)
+    )
+            {
+                return templates.LeftTopRightRoom;
+            }
+
+            // DOWN + LEFT + RIGHT (missing UP)
+            if ((entry == Vector2Int.down || exit == Vector2Int.down || extra == Vector2Int.down) &&
+                (entry == Vector2Int.left || exit == Vector2Int.left || extra == Vector2Int.left) &&
+                (entry == Vector2Int.right || exit == Vector2Int.right || extra == Vector2Int.right)
+            )
+            {
+                return templates.LeftBottomRightRoom;
+            }
+
+            // LEFT + UP + DOWN (missing RIGHT)
+            if ((entry == Vector2Int.left || exit == Vector2Int.left || extra == Vector2Int.left) &&
+                (entry == Vector2Int.up || exit == Vector2Int.up || extra == Vector2Int.up) &&
+                (entry == Vector2Int.down || exit == Vector2Int.down || extra == Vector2Int.down)
+            )
+            {
+                return templates.LeftTopBottomRoom;
+            }
+
+            // RIGHT + UP + DOWN (missing LEFT)
+            if ((entry == Vector2Int.right || exit == Vector2Int.right || extra == Vector2Int.right) &&
+                (entry == Vector2Int.up || exit == Vector2Int.up || extra == Vector2Int.up) &&
+                (entry == Vector2Int.down || exit == Vector2Int.down || extra == Vector2Int.down)
+            )
+            {
+                return templates.RightTopBottomRoom;
+            }
+            // UP + DOWN + RIGHT (missing LEFT)
+            if ((entry == Vector2Int.up || exit == Vector2Int.up || extra == Vector2Int.up) &&
+                (entry == Vector2Int.down || exit == Vector2Int.down || extra == Vector2Int.down) &&
+                (entry == Vector2Int.right || exit == Vector2Int.right || extra == Vector2Int.right))
+            {
+                return templates.RightTopBottomRoom;
+            }
+            // UP + DOWN + LEFT (missing RIGHT)
+            if ((entry == Vector2Int.up || exit == Vector2Int.up || extra == Vector2Int.up) &&
+                (entry == Vector2Int.down || exit == Vector2Int.down || extra == Vector2Int.down) &&
+                (entry == Vector2Int.left || exit == Vector2Int.left || extra == Vector2Int.left))
+            {
+                return templates.LeftTopBottomRoom;
+            }
+        }
+        
         // STRAIGHT ROOMS
 
         if ((entry == Vector2Int.up && exit == Vector2Int.down) ||
@@ -184,28 +246,28 @@ public class RoomManager : MonoBehaviour
 
     public void PlacePathObjects()
     {
-        for (int i = 0; i < dungeonGeneration.pathRooms.Count; i++)
+        for (int i = 0; i < dungeonGeneration.criticalPathRooms.Count; i++)
         {
 
 
             
 
-            Vector2Int current = dungeonGeneration.pathRooms[i];
+            Vector2Int current = dungeonGeneration.criticalPathRooms[i];
             Vector2Int prev;
            
 
             if (i > 0)
             {
-                prev = dungeonGeneration.pathRooms[i - 1];
+                prev = dungeonGeneration.criticalPathRooms[i - 1];
             }
             else
             {
                 prev = current;
             }
             Vector2Int next;
-            if (i < dungeonGeneration.pathRooms.Count - 1)
+            if (i < dungeonGeneration.criticalPathRooms.Count - 1)
             {
-                next = dungeonGeneration.pathRooms[i + 1];
+                next = dungeonGeneration.criticalPathRooms[i + 1];
             }
             else
             {
@@ -215,7 +277,7 @@ public class RoomManager : MonoBehaviour
 
             Vector2Int entryDir = -(current - prev); // gives the direction from previous to current
             Vector2Int exitDir = (next - current); // exitDir = direction you leave the room toward.
-            if (i == dungeonGeneration.pathRooms.Count - 1)
+            if (i == dungeonGeneration.criticalPathRooms.Count - 1)
             {
                 exitDir = entryDir;
             }
@@ -226,47 +288,18 @@ public class RoomManager : MonoBehaviour
             Vector3 position = new Vector3(current.x * 6, current.y * 6, 0);
 
             string cell = dungeonGeneration.dungeon[current.x][current.y];
-            /*
-            openTop = false;
-            openBottom = false;
-            string cell = dungeonGeneration.dungeon[current.x][current.y];
+            Vector2Int extraDir = Vector2Int.zero;
 
-            if (i < dungeonGeneration.pathRooms.Count - 1)
-            {
-                Vector2Int nextRoom = dungeonGeneration.pathRooms[i + 1];
-                string nextCell = dungeonGeneration.dungeon[nextRoom.x][nextRoom.y];
+            extraDir = check3WayPath(entryDir,exitDir, current);
 
-                if (cell == "e" && nextCell == "e")
-                {
-                    if (nextRoom.y > current.y) // next is ABOVE
-                        openTop = true;
-
-                    if (nextRoom.y < current.y) // next is BELOW
-                        openBottom = true;
-                }
-            }
-            if (i > 0)
-            {
-                Vector2Int prevRoom = dungeonGeneration.pathRooms[i - 1];
-                string prevCell = dungeonGeneration.dungeon[prevRoom.x][prevRoom.y];
-
-                if (cell == "e" && prevCell == "e")
-                {
-                    if (prevRoom.y > current.y) // prev is ABOVE
-                        openTop = true;
-
-                    if (prevRoom.y < current.y) // prev is BELOW
-                        openBottom = true;
-                }
-            }
-            */
-
-
-
-            GameObject room = GetRoomFromTemplates(entryDir, exitDir);
+            GameObject room = GetRoomFromTemplates(entryDir, exitDir,extraDir, current);
 
 
             if (room != null)
+            {
+                Instantiate(room, position, Quaternion.identity);
+            }
+            if (cell == "0")
             {
                 Instantiate(room, position, Quaternion.identity);
             }
@@ -277,7 +310,7 @@ public class RoomManager : MonoBehaviour
                 Instantiate(templates.floor, position, Quaternion.identity);
 
             }
-            if (cell == "p")
+           if (cell == "p")
             {
                 Instantiate(templates.floor, position, Quaternion.identity);
             }
@@ -286,7 +319,7 @@ public class RoomManager : MonoBehaviour
                 playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
                 Instantiate(templates.startTilePrefab, position, Quaternion.identity);
             }
-            if (cell == "e")
+           if (cell == "e")
             {
                 int obstacles;
 
@@ -306,6 +339,142 @@ public class RoomManager : MonoBehaviour
             {
                 Instantiate(templates.endTilePrefab, position, Quaternion.identity);
             }
+            
+
+        }
+        foreach (var branch in dungeonGeneration.branchPaths)
+        {
+            for (int i = 0; i < branch.Count; i++)
+            {
+                Vector2Int current = branch[i];
+                Vector2Int prev;
+
+
+                if (i > 0)
+                {
+                    prev = branch[i - 1];
+                }
+                else
+                {
+                    // find which neighbour is the main path
+                    Vector2Int[] dirs = {
+                        Vector2Int.up,
+                        Vector2Int.down,
+                        Vector2Int.left,
+                        Vector2Int.right
+                    };
+
+                    prev = current;
+
+                    foreach (var dir in dirs)
+                    {
+                        Vector2Int check = current + dir;
+
+                        if (check.x >= 0 && check.x < dungeonGeneration.dimensions.x &&
+                            check.y >= 0 && check.y < dungeonGeneration.dimensions.y)
+                        {
+                            string neighbour = dungeonGeneration.dungeon[check.x][check.y];
+
+                            if (neighbour != "0" && neighbour != "B")
+                            {
+                                // this is the main path connection
+                                prev = check;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                Vector2Int next;
+                if (i < branch.Count - 1)
+                {
+                    next = branch[i + 1];
+                }
+                else
+                {
+                    next = current;
+                }
+
+
+                Vector2Int entryDir = -(current - prev); // gives the direction from previous to current
+                Vector2Int exitDir = (next - current); // exitDir = direction you leave the room toward.
+                if (i == branch.Count - 1)
+                {
+                    exitDir = entryDir;
+                }
+                else
+                {
+                    exitDir = (next - current);
+                }
+
+                Vector3 position = new Vector3(current.x * 6, current.y * 6, 0);
+
+                string cell = dungeonGeneration.dungeon[current.x][current.y];
+                Vector2Int extraDir = Vector2Int.zero;
+
+                GameObject room = GetRoomFromTemplates(entryDir, exitDir, extraDir, current);
+
+                if (room != null)
+                {
+                    Instantiate(room, position, Quaternion.identity);
+                }
+
+                // Handle branch-specific rooms
+                if (cell == "t" || cell == "p")
+                {
+                    Instantiate(templates.floor, position, Quaternion.identity);
+                }
+
+                if (cell == "e")
+                {
+                    Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
+
+                    Vector3 center = new Vector3(current.x * 6, current.y * 6, 0);
+                    nodeGraph.CreateNodes(center);
+                }
+
+                if (cell == "B") 
+                {
+                    Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
+
+                }
+                if (cell == "BK")
+                {
+                    Instantiate(templates.keyRoom, position, Quaternion.identity);
+
+                }
+
+
+            }
         }
     }
+
+    Vector2Int check3WayPath(Vector2Int entryDir, Vector2Int exitDir, Vector2Int current)
+    {
+        foreach (var branch in dungeonGeneration.branchPaths)
+        {
+            if (branch.Count == 0) continue;
+
+            Vector2Int branchStart = branch[0];
+            Vector2Int diff = branchStart - current;
+
+            // Must be directly adjacent
+            if ((Mathf.Abs(diff.x) + Mathf.Abs(diff.y)) != 1)
+                continue;
+
+            // Only connect to actual branch entrance
+           // if (dungeonGeneration.dungeon[branchStart.x][branchStart.y] != "B0")
+            //    continue;
+
+            // Prevent fake 3-ways (don’t reuse entry/exit directions)
+            if (diff == entryDir || diff == exitDir)
+                continue;
+
+            return diff;
+        }
+
+        return Vector2Int.zero;
+    }
+
+  
 }

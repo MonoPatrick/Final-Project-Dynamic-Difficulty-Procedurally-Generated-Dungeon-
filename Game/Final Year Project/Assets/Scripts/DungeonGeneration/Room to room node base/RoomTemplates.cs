@@ -24,6 +24,12 @@ public class RoomTemplates : MonoBehaviour
     public GameObject[] test;
     public GameObject TopBottomOpenTop;
     public GameObject TopBottomOpenBottom;
+    public GameObject LeftBottomRightRoom;
+    public GameObject LeftTopBottomRoom;
+    public GameObject LeftTopRightRoom;
+    public GameObject RightTopBottomRoom;
+    public GameObject barricade;
+    public GameObject keyRoom;
 
 
 }

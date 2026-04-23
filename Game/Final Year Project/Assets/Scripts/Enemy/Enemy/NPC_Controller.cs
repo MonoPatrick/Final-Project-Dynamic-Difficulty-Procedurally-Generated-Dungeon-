@@ -50,7 +50,7 @@ public class NPC_Controller : MonoBehaviour
         }
         if (DDA == null)
         {
-            DDA = GameObject.FindGameObjectWithTag("Player").GetComponent<DynamicDifficultyAdjustment>();
+            DDA = GameObject.FindGameObjectWithTag("Difficulty").GetComponent<DynamicDifficultyAdjustment>();
         }
     }
 

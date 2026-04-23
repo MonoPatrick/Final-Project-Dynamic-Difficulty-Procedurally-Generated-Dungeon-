@@ -9,6 +9,7 @@ TagManager:
   - Obstacles
   - End
   - Projectile
+  - Difficulty
   layers:
   - Default
   - TransparentFX

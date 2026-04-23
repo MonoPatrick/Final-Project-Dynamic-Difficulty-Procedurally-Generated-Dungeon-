@@ -29,7 +29,7 @@ public class NodeGraph : MonoBehaviour
                     if (hit.CompareTag("Obstacles"))
                     {
                         node.isBlocked = true;
-                        Debug.Log("Node blocked by object at: " + spawnPos);
+                        //Debug.Log("Node blocked by object at: " + spawnPos);
                         break;
                     }
                 }

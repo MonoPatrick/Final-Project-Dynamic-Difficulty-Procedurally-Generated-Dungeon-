@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class DynamicDifficultyAdjustment : MonoBehaviour
 {
+    public static DynamicDifficultyAdjustment Instance;
+
     public float difficulty;
     public enum Rank { Rank1 = 1, Rank2 = 2, Rank3 = 3, Rank4 = 4, Rank5 = 5 };
     public Rank playerRank;
 
-
+    private void Awake()
+    {
+        // Singleton pattern
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // <- survives scene reload
+        }
+        else
+        {
+            Destroy(gameObject); // prevent duplicates
+        }
+    }
     private void Start()
     {
-        if (difficulty < 0.5f)
+        if (difficulty == 0f) // only set default once
         {
-            difficulty = 0.5f;
-        }
-        else if(difficulty > 2.0f)
-        {
-            
-                difficulty = 2.0f;
-            
+            difficulty = 1f;
         }
 
+        correctingDifficulty();
         difficultyRankSet();
-
     }
     private void Update()
     {
