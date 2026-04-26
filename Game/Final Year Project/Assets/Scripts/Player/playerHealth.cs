@@ -9,13 +9,14 @@ public class playerHealth : MonoBehaviour
     public float maxHealth;
     public Image healthBar;
     private DynamicDifficultyAdjustment DDA;
+    public bool debug;
     // Start is called before the first frame update
     void Start()
     {
         maxHealth = currentHealth;
         if (DDA == null)
         {
-            DDA = GameObject.FindGameObjectWithTag("Player").GetComponent<DynamicDifficultyAdjustment>();
+            DDA = GameObject.FindGameObjectWithTag("Difficulty").GetComponent<DynamicDifficultyAdjustment>();
         }
     }
 
@@ -30,10 +31,31 @@ public class playerHealth : MonoBehaviour
         
         if (collision.gameObject.tag == "Projectile")
         {
-            currentHealth -= 12 * DDA.difficulty;
+            ChangeHealth(-12 * DDA.difficulty);
             //Debug.Log("Collided with an enemy!");
             // Perform action here
         }
 
+    }
+    public void ChangeHealth(float amount)
+    {
+        currentHealth += amount;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        else if (currentHealth <= 0)
+        {
+            if (debug)
+            {
+
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+            
+        }
     }
 }

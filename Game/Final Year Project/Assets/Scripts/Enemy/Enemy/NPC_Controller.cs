@@ -30,7 +30,8 @@ public class NPC_Controller : MonoBehaviour
         Patrol,
         Engage,
         Evade,
-        Attacking
+        Attacking,
+        Knockback
     }
 
     public StateMachine currentState;
@@ -56,47 +57,47 @@ public class NPC_Controller : MonoBehaviour
 
     private void Update()
     {
-        switch (currentState)
+        if(currentState != StateMachine.Knockback)
         {
-            case StateMachine.Patrol:
-                states.NPCPatrolling();
-                break;
-            case StateMachine.Engage:
-                states.NPCEngage();
-                break;
-            case StateMachine.Evade:
-                states.NPCEvade();
-                break;
-            case StateMachine.Attacking:
-                states.NPCAttack();
-                break;
+            switch (currentState)
+            {
+                case StateMachine.Patrol:
+                    states.NPCPatrolling();
+                    break;
+                case StateMachine.Engage:
+                    states.NPCEngage(10 * DDA.difficulty);
+                    break;
+                case StateMachine.Evade:
+                    states.NPCEvade();
+                    break;
+                case StateMachine.Attacking:
+                    states.NPCAttack( 10 * DDA.difficulty);
+                    break;
+            }
         }
+        
         float dist = Vector2.Distance(transform.position, player.position);
         bool playerSeen = dist < distance;
         bool playerAttackRange = dist < attackRange;
 
+        if (currentState != StateMachine.Knockback)
+        {
+            if (!playerSeen && !playerAttackRange && currentState != StateMachine.Patrol && curHealth > (maxHealth * 20) / 100)
+            {
+                currentState = StateMachine.Patrol;
+                path.Clear();
+            }
 
-        if (!playerSeen && !playerAttackRange && currentState != StateMachine.Patrol && curHealth > (maxHealth * 20) / 100)
-        {
-            currentState = StateMachine.Patrol;
-            path.Clear();
-        }
-
-        else if (playerSeen && !playerAttackRange && currentState != StateMachine.Engage && curHealth > (maxHealth * 20) / 100)
-        {
-            currentState = StateMachine.Engage;
-            path.Clear();
-        }
-        else if (playerSeen && playerAttackRange && currentState != StateMachine.Attacking && curHealth > (maxHealth * 20) / 100)
-        {
-            currentState = StateMachine.Attacking;
-            path.Clear();
-        }
-        else if (currentState != StateMachine.Evade && curHealth <= (maxHealth * 20) / 100)
-        {
-            panicMultiplier = 2;
-            currentState = StateMachine.Evade;
-            path.Clear();
+            else if (playerSeen && !playerAttackRange && currentState != StateMachine.Engage && curHealth > (maxHealth * 20) / 100)
+            {
+                currentState = StateMachine.Engage;
+                path.Clear();
+            }
+            else if (playerSeen && playerAttackRange && currentState != StateMachine.Attacking && curHealth > (maxHealth * 20) / 100)
+            {
+                currentState = StateMachine.Attacking;
+                path.Clear();
+            }
         }
         // CreatePath();
         //attack();

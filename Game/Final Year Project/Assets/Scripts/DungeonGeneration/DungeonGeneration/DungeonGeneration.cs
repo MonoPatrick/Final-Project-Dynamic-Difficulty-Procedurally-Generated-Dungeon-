@@ -76,7 +76,7 @@ public class DungeonGeneration : MonoBehaviour
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
         {
-            critialPathLength = 25;
+            critialPathLength = 20;
         }
        
 
@@ -308,6 +308,29 @@ public class DungeonGeneration : MonoBehaviour
     }
     public bool generateBranches()
     {
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
+        {
+            branches = 0;
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
+        {
+            branches = 0;
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
+        {
+            branches = 1;
+            branchLength = new Vector2Int(3, 5);
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
+        {
+            branches = 2;
+            branchLength = new Vector2Int(5, 7);
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
+        {
+            branches = 3;
+            branchLength = new Vector2Int(7, 12);
+        }
         branchPaths.Clear();
 
         branchCandidates.Remove(criticalPathRooms[0]);

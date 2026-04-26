@@ -292,57 +292,14 @@ public class RoomManager : MonoBehaviour
 
             extraDir = check3WayPath(entryDir,exitDir, current);
 
-            GameObject room = GetRoomFromTemplates(entryDir, exitDir,extraDir, current);
+            setRooms(cell, entryDir, exitDir, extraDir, current);
 
 
-            if (room != null)
-            {
-                Instantiate(room, position, Quaternion.identity);
-            }
-            if (cell == "0")
-            {
-                Instantiate(room, position, Quaternion.identity);
-            }
 
-            // Start & End override
-            if (cell == "t")
-            {
-                Instantiate(templates.floor, position, Quaternion.identity);
 
-            }
-           if (cell == "p")
-            {
-                Instantiate(templates.floor, position, Quaternion.identity);
-            }
-            if (cell == "s")
-            {
-                playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
-                Instantiate(templates.startTilePrefab, position, Quaternion.identity);
-            }
-           if (cell == "e")
-            {
-                int obstacles;
-
-                Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
-                Vector3 center = new Vector3(current.x * 6, current.y * 6, 0); // gets the center
-                obstacles = UnityEngine.Random.Range(0, 5);
-                for (int ii = 0; ii < obstacles; ii++)
-                {
-                    // Vector3 spawnPos = center + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0); // puts the obstacle in a random area in the room
-                    //Instantiate(templates.objects[UnityEngine.Random.Range(0, templates.objects.Length)], spawnPos, Quaternion.identity);
-                }
-                //similar to the obstacles postioning set nodes in the room
-                nodeGraph.CreateNodes(center);
-            }
-
-            if (cell == "f")
-            {
-                Instantiate(templates.endTilePrefab, position, Quaternion.identity);
-            }
-            
 
         }
-        foreach (var branch in dungeonGeneration.branchPaths)
+        foreach (List<Vector2Int> branch in dungeonGeneration.branchPaths)
         {
             for (int i = 0; i < branch.Count; i++)
             {
@@ -366,7 +323,7 @@ public class RoomManager : MonoBehaviour
 
                     prev = current;
 
-                    foreach (var dir in dirs)
+                    foreach (Vector2Int dir in dirs)
                     {
                         Vector2Int check = current + dir;
 
@@ -374,8 +331,27 @@ public class RoomManager : MonoBehaviour
                             check.y >= 0 && check.y < dungeonGeneration.dimensions.y)
                         {
                             string neighbour = dungeonGeneration.dungeon[check.x][check.y];
-
-                            if (neighbour != "0" && neighbour != "B")
+                            if (dungeonGeneration.dungeon[current.x][current.y] == "B0")
+                            {
+                                if (neighbour != "0" && neighbour != "B" && neighbour != "BK" && neighbour != "B0")
+                                {
+                                    // this is the main path connection
+                                    prev = check;
+                                    break;
+                                }
+                                // Prevent B0 rooms from connecting to each other
+                                if (neighbour == "B0")
+                                {
+                                    continue;
+                                }
+                            }
+                            if (neighbour != "0" && neighbour != "B" && neighbour != "BK")
+                            {
+                                // this is the main path connection
+                                prev = check;
+                                break;
+                            }
+                            if (neighbour != "0" && neighbour != "B" && neighbour != "BK")
                             {
                                 // this is the main path connection
                                 prev = check;
@@ -407,63 +383,104 @@ public class RoomManager : MonoBehaviour
                     exitDir = (next - current);
                 }
 
-                Vector3 position = new Vector3(current.x * 6, current.y * 6, 0);
+                
 
                 string cell = dungeonGeneration.dungeon[current.x][current.y];
                 Vector2Int extraDir = Vector2Int.zero;
 
-                GameObject room = GetRoomFromTemplates(entryDir, exitDir, extraDir, current);
+                setRooms(cell, entryDir, exitDir,extraDir, current);
 
-                if (room != null)
-                {
-                    Instantiate(room, position, Quaternion.identity);
-                }
 
-                // Handle branch-specific rooms
-                if (cell == "t" || cell == "p")
-                {
-                    Instantiate(templates.floor, position, Quaternion.identity);
-                }
 
-                if (cell == "e")
-                {
-                    Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
 
-                    Vector3 center = new Vector3(current.x * 6, current.y * 6, 0);
-                    nodeGraph.CreateNodes(center);
-                }
 
-                if (cell == "B") 
-                {
-                    Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
-
-                }
-                if (cell == "BK")
-                {
-                    Instantiate(templates.keyRoom, position, Quaternion.identity);
-
-                }
 
 
             }
         }
     }
+    void setRooms(string cell, Vector2Int entryDir, Vector2Int exitDir, Vector2Int extraDir, Vector2Int current )
+    {
+        GameObject room = GetRoomFromTemplates(entryDir, exitDir, extraDir, current);
+        Vector3 position = new Vector3(current.x * 6, current.y * 6, 0);
+        if (room != null)
+        {
+            Instantiate(room, position, Quaternion.identity);
+        }
+        if (cell == "0")
+        {
+            Instantiate(room, position, Quaternion.identity);
+        }
 
+        // Start & End override
+        
+        if (cell == "s")
+        {
+            playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
+            Instantiate(templates.startTilePrefab, position, Quaternion.identity);
+        }
+        if (cell == "e")
+        {
+            int obstacles;
+
+            Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
+            Vector3 center = new Vector3(current.x * 6, current.y * 6, 0); // gets the center
+            obstacles = UnityEngine.Random.Range(0, 5);
+            for (int ii = 0; ii < obstacles; ii++)
+            {
+                // Vector3 spawnPos = center + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0); // puts the obstacle in a random area in the room
+                //Instantiate(templates.objects[UnityEngine.Random.Range(0, templates.objects.Length)], spawnPos, Quaternion.identity);
+            }
+            //similar to the obstacles postioning set nodes in the room
+            nodeGraph.CreateNodes(center);
+        }
+
+        if (cell == "f")
+        {
+            Instantiate(templates.endTilePrefab, position, Quaternion.identity);
+        }
+
+        
+        if (room != null)
+        {
+            Instantiate(room, position, Quaternion.identity);
+        }
+        // Handle branch-specific rooms
+        if (cell == "t" || cell == "p")
+        {
+            Instantiate(templates.floor, position, Quaternion.identity);
+        }
+
+        
+
+        if (cell == "B")
+        {
+            Vector3 center = new Vector3(current.x * 6, current.y * 6, 0);
+            Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
+            nodeGraph.CreateNodes(center);
+        }
+        if (cell == "BK")
+        {
+            Instantiate(templates.keyRoom, position, Quaternion.identity);
+
+        }
+
+    }
     Vector2Int check3WayPath(Vector2Int entryDir, Vector2Int exitDir, Vector2Int current)
     {
         foreach (var branch in dungeonGeneration.branchPaths)
         {
             if (branch.Count == 0) continue;
 
-            Vector2Int branchStart = branch[0];
-            Vector2Int diff = branchStart - current;
+            Vector2Int branchStart = branch[0]; // get the start of the branch (the connection point to the main path)
+            Vector2Int diff = branchStart - current; // get the direction from the current room to the start of the branch
 
             // Must be directly adjacent
             if ((Mathf.Abs(diff.x) + Mathf.Abs(diff.y)) != 1)
                 continue;
 
             // Only connect to actual branch entrance
-           // if (dungeonGeneration.dungeon[branchStart.x][branchStart.y] != "B0")
+           //if (dungeonGeneration.dungeon[branchStart.x][branchStart.y] != "B0")
             //    continue;
 
             // Prevent fake 3-ways (don’t reuse entry/exit directions)

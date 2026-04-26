@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class NPC_States : MonoBehaviour
 {
+    [SerializeField] private Cooldown cooldown;
     public NPC_Controller enemyController;
     public bool isAttacking = false;
+
+  
+    public float weaponRange;
+    public LayerMask playerlayer;
+
+    private bool canAttack = true;
 
     private void Start()
     {
@@ -35,11 +42,31 @@ public class NPC_States : MonoBehaviour
 
     }
 
-    public void NPCAttack()
+    public void NPCAttack(float damage)
     {
+        if (!canAttack) return;
         isAttacking = true;
+        canAttack = false;
+        if (cooldown.isOnCooldown)
+        {
+            Debug.Log("Attack is on cooldown!");
+            return;
+        }
+
+        Collider2D[] player = Physics2D.OverlapCircleAll(transform.position, weaponRange, playerlayer);
+
+        
+
+        Debug.Log("Player Attacked Up");
+        if (player.Length > 0)
+        {
+            player[0].GetComponent<playerHealth>().ChangeHealth(-damage);
+
+        }
+        Debug.Log("Player hurt!");
+        StartCoroutine(Timer(1.5f));
     }
-    public void NPCEngage()
+    public void NPCEngage(float damage)
     {
         isAttacking = false;
         if (enemyController.currentNode == null || enemyController.player == null || AStarManager.instance == null) // if the node the player is on is not in the enemys reach return null, if the player and astar instance is also null
@@ -66,7 +93,7 @@ public class NPC_States : MonoBehaviour
 
         if (playerInAttackRange)
         {
-            NPCAttack();
+            NPCAttack(damage);
         }
         else
         {
@@ -108,6 +135,20 @@ public class NPC_States : MonoBehaviour
             enemyController.currentNode = enemyController.path[x];
             enemyController.path.RemoveAt(x);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, weaponRange);
+    }
+
+    IEnumerator Timer(float time)
+    {
+
+        yield return new WaitForSeconds(time);
+        canAttack = true;
+        isAttacking = false;
     }
 
 }

@@ -10,14 +10,17 @@ GameObject:
   m_Component:
   - component: {fileID: 3764261061265808950}
   - component: {fileID: 5153261109888816281}
+  - component: {fileID: 8598988503076165191}
+  - component: {fileID: 3764953875383217448}
   - component: {fileID: 8994897807630058770}
   - component: {fileID: 8398141213661430820}
   - component: {fileID: -3642667731351815636}
   - component: {fileID: 7720415290778119453}
   - component: {fileID: -5164101022178104312}
-  m_Layer: 3
+  - component: {fileID: -6781223663567167878}
+  m_Layer: 6
   m_Name: NPC_Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,6 +94,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8598988503076165191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177126435386268519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3564727beb3d71b4182af4729a94dcc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 8
+  curHealth: 0
+--- !u!114 &3764953875383217448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177126435386268519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c52c5ba6ba0114ba17ac9112663e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8994897807630058770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,8 +271,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e165f48188798ae4f8db434ddd35d58d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cooldown:
+    cooldownTime: 0
   enemyController: {fileID: 8398141213661430820}
   isAttacking: 0
+  weaponRange: 0
+  playerlayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7720415290778119453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,3 +337,30 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &-6781223663567167878
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177126435386268519}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 6.34
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

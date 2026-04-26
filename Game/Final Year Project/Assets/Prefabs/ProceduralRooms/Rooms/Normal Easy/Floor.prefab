@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floor
       objectReference: {fileID: 0}
+    - target: {fileID: 7268515384556807393, guid: ea178b68a0d2ae34c864bceed510a167, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7301547434787513717, guid: ea178b68a0d2ae34c864bceed510a167, type: 3}
       propertyPath: m_TileAssetArray.Array.data[16].m_Data
       value: 

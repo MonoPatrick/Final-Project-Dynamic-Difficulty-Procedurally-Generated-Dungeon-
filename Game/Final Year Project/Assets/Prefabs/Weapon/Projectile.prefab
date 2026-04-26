@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5560842890312799176}
   - component: {fileID: 7392423750462140566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ProjectileShadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: -8185529865725918272}
   - component: {fileID: 3134128272479453643}
   - component: {fileID: 2705680371460591245}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Projectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6596716417744857695}
   - component: {fileID: 3041949894335319618}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ProjectileVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    
+    public PlayerCombat combat;
     private Player playerScript;
     public GameObject gameObject;
     [SerializeField] private Cooldown cooldown; // Reference to the Cooldown class for managing attack cooldowns
@@ -17,6 +17,8 @@ public class PlayerInput : MonoBehaviour
     public bool grounded;
     Vector2 movement;
     Vector2 targetVelocity;
+
+    int attackDirection;
 
     // Apply movement to the Rigidbody
     Vector2 velocity;
@@ -98,7 +100,7 @@ public class PlayerInput : MonoBehaviour
             Debug.Log("Attack is on cooldown!");
             return;
         }
-
+        
         Debug.Log("Player Attacked!");
         animator.SetTrigger("isAttacking");
         cooldown.StartCooldown();
@@ -168,6 +170,23 @@ public class PlayerInput : MonoBehaviour
             animator.SetFloat("moveY", 0f);
         }
     }
+    void attackUp()
+    {
+        attackDirection = 1;
+    }
+    void attackDown()
+    {
+        attackDirection = 2; 
+    }
+    void attackLeft()
+    {
+        attackDirection = 3;
+    }
+    void attackRight()
+    {
+        attackDirection = 4;
+    }
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Floor"))
