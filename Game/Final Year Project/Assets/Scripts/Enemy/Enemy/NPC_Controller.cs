@@ -42,7 +42,7 @@ public class NPC_Controller : MonoBehaviour
 
     private void Start()
     {
-        baseSpeed = 1.5f;
+        baseSpeed = 2.5f;
         currentState = StateMachine.Patrol;
         curHealth = maxHealth;
         if (player == null)
@@ -121,6 +121,8 @@ public class NPC_Controller : MonoBehaviour
                 Gizmos.DrawLine(path[i].transform.position, path[i - 1].transform.position);
             }
         }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
     private void enemyDifficultyChange()
     {

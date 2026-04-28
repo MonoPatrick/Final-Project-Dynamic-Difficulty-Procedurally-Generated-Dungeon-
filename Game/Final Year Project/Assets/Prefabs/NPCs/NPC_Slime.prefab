@@ -107,6 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   curHealth: 0
+  health: {fileID: 8736057483275446185, guid: 540e6e64acd7dae46815cd61f1499d30, type: 3}
+  coin: {fileID: 8736057483275446185, guid: fdd9214e966e86f45b77db5f82cfa039, type: 3}
+  popUpPrefab: {fileID: 5164003879307898411, guid: a5c45f65e5ea3c14e8148193f8e3447c, type: 3}
 --- !u!114 &-2747694168788262006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,10 +169,10 @@ MonoBehaviour:
     cooldownTime: 4.02
   enemyController: {fileID: 8398141213661430820}
   isAttacking: 0
-  weaponRange: 1.13
+  weaponRange: 0.94
   playerlayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!114 &7720415290778119453
 MonoBehaviour:
   m_ObjectHideFlags: 0

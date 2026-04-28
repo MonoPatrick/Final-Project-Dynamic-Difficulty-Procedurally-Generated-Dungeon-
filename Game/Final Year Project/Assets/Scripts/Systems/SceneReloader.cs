@@ -21,12 +21,15 @@ public class SceneReloader : MonoBehaviour
     {
         if (collision.gameObject.tag == "End")
         {
+            
             sceneReload();
         }
     }
 
     public void sceneReload()
     {
+        FindObjectOfType<ScoreCount>().AddScore(10000);
+        DynamicDifficultyAdjustment.Instance.changeDifficulty(0.1f);
         currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
     }

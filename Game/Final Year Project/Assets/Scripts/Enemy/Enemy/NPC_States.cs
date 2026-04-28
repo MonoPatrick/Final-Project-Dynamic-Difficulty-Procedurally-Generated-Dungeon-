@@ -44,26 +44,27 @@ public class NPC_States : MonoBehaviour
 
     public void NPCAttack(float damage)
     {
-        if (!canAttack) return;
-        isAttacking = true;
-        canAttack = false;
-        if (cooldown.isOnCooldown)
+        if (!canAttack || cooldown.isOnCooldown)
         {
-            Debug.Log("Attack is on cooldown!");
+            
             return;
         }
+        isAttacking = true;
+        canAttack = false;
+        
 
         Collider2D[] player = Physics2D.OverlapCircleAll(transform.position, weaponRange, playerlayer);
+        Debug.Log("Hits found: " + player.Length);
 
-        
 
         Debug.Log("Player Attacked Up");
         if (player.Length > 0)
         {
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.06f);
             player[0].GetComponent<playerHealth>().ChangeHealth(-damage);
-
+            Debug.Log("Player hurt!");
         }
-        Debug.Log("Player hurt!");
+        
         StartCoroutine(Timer(1.5f));
     }
     public void NPCEngage(float damage)

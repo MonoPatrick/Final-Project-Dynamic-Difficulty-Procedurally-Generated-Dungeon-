@@ -16,13 +16,15 @@ public class NodeGraph : MonoBehaviour
     public void CreateNodes(Vector3 center)
     {
         nodeList.Clear();
-        for (float x = -2.0f; x <= 2.0f; x += 1.0f)
+
+        // spawn nodes in a grid pattern around the center point using -2.5 from center to 2.5 from the center
+        for (float x = -2.5f; x <= 2.5f; x += 0.5f)
         {
-            for (float y = -2.0f; y <= 2.0f; y += 1.0f)
+            for (float y = -2.5f; y <= 2.5f; y += 0.5f)
             {
-                Vector3 spawnPos = center + new Vector3(x, y, 0);
+                Vector3 spawnPos = center + new Vector3(x, y, 0); // calculate the spawn position for the node based on the center point and the current x and y values in the loop
                 Node node = Instantiate(nodePrefab, spawnPos, Quaternion.identity);
-                Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.2f);
+                Collider2D[] hits = Physics2D.OverlapCircleAll(spawnPos, 0.2f); // check for colliders in a small radius around the node position to determine if the node is blocked by an obstacle, this is to prevent enemies from going through walls and other obstacles
 
                 foreach (Collider2D hit in hits)
                 {
@@ -48,9 +50,9 @@ public class NodeGraph : MonoBehaviour
             for (int ii = i + 1; ii < nodeList.Count; ii++)
             {
                 if (nodeList[i].isBlocked || nodeList[ii].isBlocked)
-                    continue;
+                    continue; // if either node is blocked skip the connection which stops enemies going in this area
 
-                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 1.5f) // set connections 
+                if (Vector2.Distance(nodeList[i].transform.position, nodeList[ii].transform.position) <= 0.8f) // set connections with its distance, if the distance is less than or equal to 0.8f then connect the nodes, this is to prevent diagonal connections and only connect nodes that are close enough
                 {
                     ConnectNodes(nodeList[i], nodeList[ii]);
                     ConnectNodes(nodeList[ii], nodeList[i]);
@@ -75,9 +77,29 @@ public class NodeGraph : MonoBehaviour
     }
     void SpawnAI()
     {
-        int enemies;
+        int enemies = UnityEngine.Random.Range(1, 3);
 
-        enemies = UnityEngine.Random.Range(1, 3);
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
+        {
+            enemies = UnityEngine.Random.Range(1, 3);
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
+        {
+            enemies = UnityEngine.Random.Range(2, 4);
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
+        {
+            enemies = UnityEngine.Random.Range(2, 5);
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
+        {
+            enemies = UnityEngine.Random.Range(3, 5);
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
+        {
+            enemies = UnityEngine.Random.Range(4, 6);
+        }
+        
         for (int i = 0; i < enemies; i++)
         {
             Node randNode = nodeList[Random.Range(0, nodeList.Count)];

@@ -106,8 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3564727beb3d71b4182af4729a94dcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 8
+  maxHealth: 4
   curHealth: 0
+  health: {fileID: 8736057483275446185, guid: 540e6e64acd7dae46815cd61f1499d30, type: 3}
+  coin: {fileID: 8736057483275446185, guid: fdd9214e966e86f45b77db5f82cfa039, type: 3}
+  popUpPrefab: {fileID: 5164003879307898411, guid: a5c45f65e5ea3c14e8148193f8e3447c, type: 3}
 --- !u!114 &3764953875383217448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +254,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackRange: 3
+  attackRange: 2
   distance: 4
   baseSpeed: 1
   baseMaxHealth: 100
@@ -335,7 +338,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.19, y: 3.42}
   m_EdgeRadius: 0
 --- !u!50 &-6781223663567167878
 Rigidbody2D:

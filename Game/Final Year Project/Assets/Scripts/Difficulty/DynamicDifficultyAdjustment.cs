@@ -16,7 +16,7 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // <- survives scene reload
+            DontDestroyOnLoad(gameObject); //  survives scene reload
         }
         else
         {
@@ -99,6 +99,10 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
         {
             playerRank = Rank.Rank5;
         }
+    }
+    public void changeDifficulty(float amount)
+    {
+        difficulty += amount;
     }
 
     

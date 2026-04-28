@@ -20,6 +20,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("Player Attacked Up");
         if (enemies.Length > 0)
         {
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.01f);
             enemies[0].GetComponent<EnemyHealth>().ChangeHealth(-damage);
             enemies[0].GetComponent<EnemyKnockback>().Knockback(transform, knockbackForce, knockbackTime, stunTime);
         }
@@ -30,6 +31,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("Player Attacked Down");
         if (enemies.Length > 0)
         {
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.01f);
             enemies[0].GetComponent<EnemyHealth>().ChangeHealth(-damage);
             enemies[0].GetComponent<EnemyKnockback>().Knockback(transform, knockbackForce, knockbackTime, stunTime);
         }
@@ -40,6 +42,7 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("Player Attacked Left");
         if (enemies.Length > 0)
         {
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.01f);
             enemies[0].GetComponent<EnemyHealth>().ChangeHealth(-damage);
             enemies[0].GetComponent<EnemyKnockback>().Knockback(transform, knockbackForce, knockbackTime, stunTime);
         }
@@ -50,6 +53,8 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("Player Attacked Right");
         if (enemies.Length > 0)
         {
+
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.01f);
             enemies[0].GetComponent<EnemyHealth>().ChangeHealth(-damage);
             enemies[0].GetComponent<EnemyKnockback>().Knockback(transform, knockbackForce, knockbackTime, stunTime);
         }

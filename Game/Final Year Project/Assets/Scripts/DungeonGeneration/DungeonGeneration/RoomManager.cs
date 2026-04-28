@@ -21,7 +21,7 @@ public class RoomManager : MonoBehaviour
     bool bigRoom;
     bool openTop;
     bool openBottom;
-
+    public int size = 7;
 
 
     void Start()
@@ -402,7 +402,7 @@ public class RoomManager : MonoBehaviour
     void setRooms(string cell, Vector2Int entryDir, Vector2Int exitDir, Vector2Int extraDir, Vector2Int current )
     {
         GameObject room = GetRoomFromTemplates(entryDir, exitDir, extraDir, current);
-        Vector3 position = new Vector3(current.x * 6, current.y * 6, 0);
+        Vector3 position = new Vector3(current.x * size, current.y * size, 0);
         if (room != null)
         {
             Instantiate(room, position, Quaternion.identity);
@@ -424,7 +424,7 @@ public class RoomManager : MonoBehaviour
             int obstacles;
 
             Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
-            Vector3 center = new Vector3(current.x * 6, current.y * 6, 0); // gets the center
+            Vector3 center = new Vector3(current.x * size, current.y * size, 0); // gets the center
             obstacles = UnityEngine.Random.Range(0, 5);
             for (int ii = 0; ii < obstacles; ii++)
             {
@@ -455,7 +455,7 @@ public class RoomManager : MonoBehaviour
 
         if (cell == "B")
         {
-            Vector3 center = new Vector3(current.x * 6, current.y * 6, 0);
+            Vector3 center = new Vector3(current.x * size, current.y * size, 0);
             Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
             nodeGraph.CreateNodes(center);
         }

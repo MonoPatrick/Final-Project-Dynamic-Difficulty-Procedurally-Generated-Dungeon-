@@ -26,14 +26,17 @@ public class Bullet : MonoBehaviour
         if (other.CompareTag("Enemy")) // if the bullet collides with an enemy, destroy the bullet and apply damage to the enemy
         {
             other.GetComponent<EnemyHealth>().ChangeHealth(-1);
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.03f);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Obstacles")) // if the bullet collides with an obstacle, destroy the bullet
         {
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.01f);
             Destroy(gameObject);
         }
         else if (other.CompareTag("Walls")) // if the bullet collides with an obstacle, destroy the bullet
         {
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.01f);
             Destroy(gameObject);
         }
     }
