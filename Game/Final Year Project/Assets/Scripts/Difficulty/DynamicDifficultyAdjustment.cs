@@ -25,9 +25,18 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
     }
     private void Start()
     {
-        if (difficulty == 0f) // only set default once
+
+        if(GameSettings.easy)
         {
-            difficulty = 1f;
+            playerRank = Rank.Rank1;
+        }
+        else if (GameSettings.normal)
+        {
+            playerRank = Rank.Rank3;
+        }
+        else if (GameSettings.hard)
+        {
+            playerRank = Rank.Rank5;
         }
 
         correctingDifficulty();
