@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3564727beb3d71b4182af4729a94dcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 4
+  maxHealth: 30
   curHealth: 0
   health: {fileID: 8736057483275446185, guid: 540e6e64acd7dae46815cd61f1499d30, type: 3}
   coin: {fileID: 8736057483275446185, guid: fdd9214e966e86f45b77db5f82cfa039, type: 3}
@@ -254,8 +254,8 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackRange: 2
-  distance: 4
+  attackRange: 3.12
+  distance: 5.52
   baseSpeed: 1
   baseMaxHealth: 100
   states: {fileID: -3642667731351815636}

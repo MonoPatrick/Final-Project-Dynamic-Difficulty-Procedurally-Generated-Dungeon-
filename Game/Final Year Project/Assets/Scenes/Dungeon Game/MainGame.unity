@@ -527,7 +527,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 460974121}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: AttackPoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -633,7 +633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 490084545}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,7 +649,7 @@ Transform:
   m_GameObject: {fileID: 490084544}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3371009, z: 0}
+  m_LocalPosition: {x: 0, y: 0.517, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1184,7 +1184,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791874278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -1524,7 +1524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083408679}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1540,7 +1540,7 @@ Transform:
   m_GameObject: {fileID: 1083408678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.75, z: 0}
+  m_LocalPosition: {x: 0, y: -0.958, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1594,7 +1594,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206401022}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -1638,7 +1638,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206401022}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20e2b3dddf209ab43aeea9ac66c69a30, type: 3}
   m_Name: 
@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206401022}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1680,7 +1680,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206401022}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ef44917851e0bf46be282b239fd410a, type: 3}
   m_Name: 
@@ -2084,7 +2084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa343926582f9a8488da98ec00c20932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 100
+  currentHealth: 120
   maxHealth: 0
   healthBar: {fileID: 1567695500}
   debug: 0
@@ -2106,12 +2106,12 @@ MonoBehaviour:
   - {fileID: 1083408679}
   - {fileID: 1914604261}
   - {fileID: 1914604261}
-  weaponRange: 0.29
+  weaponRange: 0.84
   knockbackForce: 50
   enemylayer:
     serializedVersion: 2
     m_Bits: 64
-  damage: 1
+  damage: 15
   knockbackTime: 0.15
   stunTime: 0
 --- !u!114 &1317668534 stripped
@@ -3241,7 +3241,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1914604261}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3257,7 +3257,7 @@ Transform:
   m_GameObject: {fileID: 1914604260}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.47, y: -0.21812141, z: 0}
+  m_LocalPosition: {x: 0.594, y: -0.21812141, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

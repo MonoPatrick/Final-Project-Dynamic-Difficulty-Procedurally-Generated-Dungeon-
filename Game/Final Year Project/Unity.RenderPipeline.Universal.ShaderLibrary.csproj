@@ -10,10 +10,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{D8EA06D3-70D0-D665-92FC-53DCC87461A3}</ProjectGuid>
+    <ProjectGuid>{9F2B3A23-6760-0115-A3DE-7CEEA8671A48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Unity.TextMeshPro</AssemblyName>
+    <AssemblyName>Unity.RenderPipeline.Universal.ShaderLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169;USG0001</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,7 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169;USG0001</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -61,70 +61,62 @@
     <Analyzer Include="C:\Program Files\Unity\2023.2.22f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextProcessingStack.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextElement.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMPro_EventManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SubMesh.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_ListPool.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_ShaderUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SpriteAnimator.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\ITextPreProcessor.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_CoroutineTween.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMPro_ExtensionMethods.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TextMeshProUGUI.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_FontAsset.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Character.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_StyleSheet.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Dropdown.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMPro_MeshUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\AssemblyInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\FastAction.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextProcessingCommon.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_FontAssetUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_DefaultControls.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Compatibility.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_UpdateManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SpriteGlyph.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\MaterialReferenceManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SpriteAsset.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SelectionCaret.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_InputField.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SpriteAssetImportFormats.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_MaterialManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\FontFeatureCommon.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_PackageResourceImporter.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Settings.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Asset.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_ColorGradient.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_FontFeaturesCommon.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_RichTextTagsCommon.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextParsingUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SpriteCharacter.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_MeshInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_ScrollbarEventHandler.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_LineInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_TextElement_Legacy.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_FontAssetCommon.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TextMeshPro.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TextContainer.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\FontFeatureCommonGPOS.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Text.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_FontFeatureTable.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_CharacterInfo.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_DynamicFontAssetUtilities.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_ResourcesManager.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_SubMeshUI.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_InputValidator.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Style.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_UpdateRegistery.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_ObjectPool.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\FontFeatureCommonGSUB.cs" />
-    <Compile Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\TMP_Sprite.cs" />
+    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Deprecated.cs" />
+    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ShaderTypes.cs" />
+    <Compile Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Debug\DebugViewEnums.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library\PackageCache\com.unity.ugui@2.0.0\Runtime\TMP\Unity.TextMeshPro.asmdef" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\NormalReconstruction.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DBuffer.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ProbeVolumeVariants.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\VisualEffectVertex.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Shadows.deprecated.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DOTS.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\UniversalDOTSInstancing.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Debug\DebuggingFullscreen.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Unlit.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DeclareNormalsTexture.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\MotionVectorsCommon.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Input.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Core.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\SSAO.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\BRDF.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Debug\DebugViewEnums.cs.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\SurfaceInput.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Debug\DebuggingCommon.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\UnityInput.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\SixWayLighting.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Lighting.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\UniversalMetaPass.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ShaderVariablesFunctions.deprecated.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\LightCookie\LightCookieInput.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ParticlesInstancing.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\SurfaceData.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Particles.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\LightCookie\LightCookie.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Deprecated.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ShaderVariablesFunctions.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Debug\Debugging3D.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DeclareOpaqueTexture.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\LightCookie\LightCookieTypes.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ShaderGraphFunctions.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\GlobalIllumination.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ShaderTypes.cs.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Unity.RenderPipelines.Universal.ShaderLibrary.asmdef" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\UnityGBuffer.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\AmbientOcclusion.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Clustering.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Shadows.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\MetaInput.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\RenderingLayers.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\ObjectMotionVectors.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DeclareRenderingLayerTexture.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\UnityTypes.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DecalInput.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\Debug\Debugging2D.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\RealtimeLights.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\LODCrossFade.hlsl" />
+    <None Include="Library\PackageCache\com.unity.render-pipelines.universal@16.0.6\ShaderLibrary\DeclareDepthTexture.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -1165,6 +1157,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj">
+      <Project>{6C3207E9-F12C-4AB9-F83B-2FA483D287FE}</Project>
+      <Name>Unity.RenderPipelines.Core.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{CE052A6B-81BC-3494-005F-4B6B2FE8E49F}</Project>
       <Name>UnityEditor.UI</Name>

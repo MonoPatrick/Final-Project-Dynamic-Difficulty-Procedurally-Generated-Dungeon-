@@ -14,7 +14,7 @@ public class NPC_States : MonoBehaviour
 
     private bool canAttack = true;
     float nextPatrolPathTime = 0f;
-    float patrolPathCooldown = 0.4f;
+    float patrolPathCooldown = 0.2f;
 
     float nextChasePathTime = 0f;
     float chasePathCooldown = 0.1f;

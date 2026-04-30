@@ -6,8 +6,7 @@ public class Player : MonoBehaviour
 
 {
     public DynamicDifficultyAdjustment DDA;
-    //player health
-    public int playerHealth = 3;
+
 
     //player movement speed
     public float playerMovement = 5f;
