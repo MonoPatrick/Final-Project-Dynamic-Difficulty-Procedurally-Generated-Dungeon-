@@ -24,6 +24,9 @@ public class NPC_Controller : MonoBehaviour
     public float baseSpeed;
     public float baseMaxHealth = 100f;
 
+    private float lastDifficulty = -1f;
+    private DynamicDifficultyAdjustment.Rank lastRank;
+
     public NPC_States states;
     public enum StateMachine
     {
@@ -52,6 +55,12 @@ public class NPC_Controller : MonoBehaviour
         if (DDA == null)
         {
             DDA = GameObject.FindGameObjectWithTag("Difficulty").GetComponent<DynamicDifficultyAdjustment>();
+        }
+        if (states == null)
+        {
+            states = GetComponent<NPC_States>();
+            if (states == null)
+                Debug.LogError("NPC_States not assigned to NPC_Controller!");
         }
     }
 
@@ -102,13 +111,13 @@ public class NPC_Controller : MonoBehaviour
         // CreatePath();
         //attack();
         //Debug.Log(isAttacking);
-        enemyDifficultyChange();
+        UpdateDifficultyIfNeeded();
 
     }
 
 
 
-
+    /*
     private void OnDrawGizmos()
     {
         if (path == null || path.Count == 0)
@@ -123,7 +132,24 @@ public class NPC_Controller : MonoBehaviour
         }
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }*/
+    private void UpdateDifficultyIfNeeded()
+    {
+        if (DDA.difficulty != lastDifficulty || DDA.playerRank != lastRank)
+        {
+            if (DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank3 ||
+                DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank4 ||
+                DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
+            {
+                speed = DDA.difficulty * baseSpeed;
+            }
+            maxHealth = DDA.difficulty * baseMaxHealth;
+
+            lastDifficulty = DDA.difficulty;
+            lastRank = DDA.playerRank;
+        }
     }
+
     private void enemyDifficultyChange()
     {
         if(DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank3 || DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank4 || DDA.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)

@@ -13,6 +13,11 @@ public class NPC_States : MonoBehaviour
     public LayerMask playerlayer;
 
     private bool canAttack = true;
+    float nextPatrolPathTime = 0f;
+    float patrolPathCooldown = 0.4f;
+
+    float nextChasePathTime = 0f;
+    float chasePathCooldown = 0.1f;
 
     private void Start()
     {
@@ -24,12 +29,12 @@ public class NPC_States : MonoBehaviour
         if (enemyController.currentNode == null || AStarManager.instance == null)
             return;
 
-        if (enemyController.path == null || enemyController.path.Count == 0)
+        if ((enemyController.path == null || enemyController.path.Count == 0) && Time.time >= nextPatrolPathTime)
         {
-            Node[] nodes = AStarManager.instance.AllNodes();
+            nextPatrolPathTime = Time.time + patrolPathCooldown;
 
-            if (nodes == null || nodes.Length == 0)
-                return;
+            Node[] nodes = AStarManager.instance.AllNodes();
+            if (nodes == null || nodes.Length == 0) return;
 
             Node target = nodes[Random.Range(0, nodes.Length)];
             List<Node> newPath = AStarManager.instance.GeneratePath(enemyController.currentNode, target);
@@ -73,9 +78,11 @@ public class NPC_States : MonoBehaviour
         if (enemyController.currentNode == null || enemyController.player == null || AStarManager.instance == null) // if the node the player is on is not in the enemys reach return null, if the player and astar instance is also null
             return;
 
-        if (enemyController.path == null || enemyController.path.Count == 0)
+        if ((enemyController.path == null || enemyController.path.Count == 0) && Time.time >= nextChasePathTime)
         {
-            Node target = AStarManager.instance.FindNearestNode(enemyController.player.position);// this finds the nearest node to where the player is
+            nextChasePathTime = Time.time + chasePathCooldown;
+
+            Node target = AStarManager.instance.FindNearestNode(enemyController.player.position);
 
             if (target == null)
             {
@@ -88,17 +95,17 @@ public class NPC_States : MonoBehaviour
             if (newPath != null && newPath.Count > 0)
             {
                 enemyController.path = newPath;
+                
             }
         }
-        bool playerInAttackRange = Vector2.Distance(transform.position, enemyController.player.position) < enemyController.attackRange;
+
+        
+        float distSqr = (transform.position - enemyController.player.position).sqrMagnitude;
+        bool playerInAttackRange = distSqr < enemyController.attackRange * enemyController.attackRange;
 
         if (playerInAttackRange)
         {
             NPCAttack(damage);
-        }
-        else
-        {
-            
         }
         CreatePath();
     }

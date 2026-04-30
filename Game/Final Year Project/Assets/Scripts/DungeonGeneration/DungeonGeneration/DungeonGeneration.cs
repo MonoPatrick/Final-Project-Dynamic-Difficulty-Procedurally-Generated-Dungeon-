@@ -310,7 +310,7 @@ public class DungeonGeneration : MonoBehaviour
     {
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
         {
-            branches = 0;
+            branches = 00;
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
         {
@@ -329,7 +329,7 @@ public class DungeonGeneration : MonoBehaviour
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
         {
             branches = 3;
-            branchLength = new Vector2Int(7, 12);
+            branchLength = new Vector2Int(5, 7);
         }
         branchPaths.Clear();
 
@@ -348,6 +348,9 @@ public class DungeonGeneration : MonoBehaviour
             branchCandidates.RemoveAt(index);
 
             List<Vector2Int> branch = new List<Vector2Int>();
+
+            // Add the critical path room where the branch begins
+            branch.Add(start);
 
             int targetLength = Random.Range(branchLength.x, branchLength.y + 1);
 

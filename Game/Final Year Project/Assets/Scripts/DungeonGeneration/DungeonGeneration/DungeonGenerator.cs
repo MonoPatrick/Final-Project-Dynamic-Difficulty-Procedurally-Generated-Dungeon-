@@ -30,6 +30,7 @@ public class DungeonGenerator : MonoBehaviour
         roomManager.overwriteNodes();
         dungeonGeneration.generateBranches();
         dungeonGeneration.PrintDungeon();
+        roomManager.checkForKeyRoom();
         roomManager.PlacePathObjects();
 
     }

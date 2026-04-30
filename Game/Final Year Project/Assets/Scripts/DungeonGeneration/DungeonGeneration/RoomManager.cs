@@ -13,6 +13,7 @@ public class RoomManager : MonoBehaviour
     int TreasureRooms = 20;
     int numberOfTreasureRooms = 0;
 
+    bool keyRoom = false;
     public RoomTemplates templates;
     public Transform playerpos;
 
@@ -30,7 +31,9 @@ public class RoomManager : MonoBehaviour
     }
     public void overwriteNodes()
     {
-        
+        // in this function the grammars set in dungeon generation are  turned into grammars that'll 
+        // be used later on to instantiate the room type
+
         for (int x = 0; x < dungeonGeneration.dimensions.x; x++)
         {
             for (int y = 0; y < dungeonGeneration.dimensions.y; y++)
@@ -40,11 +43,11 @@ public class RoomManager : MonoBehaviour
                 {
                     if (cell == "f")
                     {
-                        dungeonGeneration.dungeon[x][y] = "f";
+                        dungeonGeneration.dungeon[x][y] = "f";// final room
                     }
                     else
                     {
-                        dungeonGeneration.dungeon[x][y] = "R";
+                        dungeonGeneration.dungeon[x][y] = "R"; // everything else is just an empty room and except 0, start, B for branch and b0 for start branch
                     }
                 }
             }
@@ -55,7 +58,7 @@ public class RoomManager : MonoBehaviour
             for (int y = 0; y < dungeonGeneration.dimensions.y; y++)
             {
                 //set room types to R transform the room
-                if (dungeonGeneration.dungeon[x][y] == "R")
+                if (dungeonGeneration.dungeon[x][y] == "R") // all rooms in the critical path are now R, it is capital as it'll be replaced in this if statement
                 {
                     bool placed = false;
 
@@ -63,7 +66,7 @@ public class RoomManager : MonoBehaviour
                     {
                         int value = Random.Range(0, 3); // 0, 1, or 2
 
-                        switch (value)
+                        switch (value) // the rooms will be selected from enemy room, treasure room and p room
                         {
                             case 0:
                                 if (numberOfEnemyRooms < enemyRooms)
@@ -95,7 +98,7 @@ public class RoomManager : MonoBehaviour
             {
                 if (numberOfEnemyRooms < enemyRooms)
                 {
-                    if (dungeonGeneration.dungeon[x][y] == "t")
+                    if (dungeonGeneration.dungeon[x][y] == "t") // if the number of enemy rooms is not met then replace treasure rooms with e
                     {
                         dungeonGeneration.dungeon[x][y] = "e";
                         numberOfEnemyRooms++;
@@ -106,22 +109,15 @@ public class RoomManager : MonoBehaviour
         }
 
         Vector2Int endRoom = dungeonGeneration.criticalPathRooms[dungeonGeneration.criticalPathRooms.Count - 1];
-        dungeonGeneration.dungeon[endRoom.x][endRoom.y] = "f";
+        dungeonGeneration.dungeon[endRoom.x][endRoom.y] = "f"; // just to make sure the room at the end is f
 
 
     }
     GameObject GetRoomFromTemplates(Vector2Int entry, Vector2Int exit, Vector2Int extra, Vector2Int current )
     {
-        if (dungeonGeneration.dungeon[current.x][current.y] == "0")
-        {
-            return templates.barricade;
-        }
-            if (dungeonGeneration.dungeon[current.x][current.y] == "B0")
-        {
-            //return templates.test[0];
-        }
+        
 
-        if (extra != Vector2Int.zero)
+        if (extra != Vector2Int.zero) // if extra path isn't equal to anything then just move on
         {
             // 3 path rooms 
             if ((entry == Vector2Int.up || exit == Vector2Int.up || extra == Vector2Int.up) &&
@@ -179,99 +175,85 @@ public class RoomManager : MonoBehaviour
         if ((entry == Vector2Int.up && exit == Vector2Int.down) ||
             (entry == Vector2Int.down && exit == Vector2Int.up))
         {
-            if (openTop && !openBottom)
-                return templates.TopBottomOpenTop;
+          
 
-            if (openBottom && !openTop)
-                return templates.TopBottomOpenBottom;
-            if (openTop && openBottom)
-            {
-                return templates.test[0];
-            }
-
-            return templates.TopBottomRooms[0];
-
-            
-
-
+            return templates.TopBottomRooms[0]; // top and bottom straight room
 
         }
 
         if ((entry == Vector2Int.left && exit == Vector2Int.right) ||
             (entry == Vector2Int.right && exit == Vector2Int.left))
         {
-            return templates.LeftRightRooms[0];
+            return templates.LeftRightRooms[0];// left and right straight room
         }
 
         // CORNERS
         if ((entry == Vector2Int.up && exit == Vector2Int.right) ||
             (entry == Vector2Int.right && exit == Vector2Int.up))
         {
-            return templates.TopRightRooms[0];
+            return templates.TopRightRooms[0]; // top and right corner room
         }
 
         if ((entry == Vector2Int.up && exit == Vector2Int.left) ||
             (entry == Vector2Int.left && exit == Vector2Int.up))
         {
-            return templates.TopLeftRooms[0];
+            return templates.TopLeftRooms[0]; // top and left corner room
         }
 
         if ((entry == Vector2Int.down && exit == Vector2Int.right) ||
             (entry == Vector2Int.right && exit == Vector2Int.down))
         {
-            return templates.BottomRightRooms[0];
+            return templates.BottomRightRooms[0]; // bottom and right corner room
         }
 
         if ((entry == Vector2Int.down && exit == Vector2Int.left) ||
             (entry == Vector2Int.left && exit == Vector2Int.down))
         {
-            return templates.BottomLeftRooms[0];
+            return templates.BottomLeftRooms[0]; // bottom and left corner room
         }
 
 
         if (exit == Vector2Int.up)
-            return templates.TopRooms[0];
+            return templates.TopRooms[0]; // top dead end room
 
         if (exit == Vector2Int.down)
-            return templates.BottomRooms[0];
+            return templates.BottomRooms[0]; // bottom dead end room
 
         if (exit == Vector2Int.left)
-            return templates.LeftRooms[0];
+            return templates.LeftRooms[0]; // left dead end room
 
         if (exit == Vector2Int.right)
-            return templates.RightRooms[0];
+            return templates.RightRooms[0]; // right dead end room
 
         return null;
     }
 
     public void PlacePathObjects()
     {
-        for (int i = 0; i < dungeonGeneration.criticalPathRooms.Count; i++)
+
+        for (int i = 0; i < dungeonGeneration.criticalPathRooms.Count; i++) //this loops through the amount of critical path rooms
         {
-
-
-            
-
-            Vector2Int current = dungeonGeneration.criticalPathRooms[i];
-            Vector2Int prev;
+            Vector2Int current = dungeonGeneration.criticalPathRooms[i]; // current is the position of the room in the critical path that we're currently looking at, this is used to determine which room to spawn and where to spawn it
+            Vector2Int prev; //prev is the position of the previous room in the critical path of the current room
+            // these are used to find the entrance and exit directions of the room 
            
 
             if (i > 0)
             {
-                prev = dungeonGeneration.criticalPathRooms[i - 1];
+                prev = dungeonGeneration.criticalPathRooms[i - 1]; //sets prev to the previous room
             }
             else
             {
-                prev = current;
+                prev = current; // if i is 0 then there is no previous room which means previous room will be current meaning the exit will the same as the entrance making a dead end room 
             }
             Vector2Int next;
             if (i < dungeonGeneration.criticalPathRooms.Count - 1)
             {
-                next = dungeonGeneration.criticalPathRooms[i + 1];
+                next = dungeonGeneration.criticalPathRooms[i + 1]; //the next room in the critical path is set to next getting the exit direction of the room
             }
             else
             {
-                next = current;
+                next = current; // if next is at the end then it'll be a dead end
             }
 
 
@@ -279,20 +261,22 @@ public class RoomManager : MonoBehaviour
             Vector2Int exitDir = (next - current); // exitDir = direction you leave the room toward.
             if (i == dungeonGeneration.criticalPathRooms.Count - 1)
             {
-                exitDir = entryDir;
+                exitDir = entryDir; // if it's the last room then the exit direction will be the same as the entry direction making it a dead end
             }
             else
             {
-                exitDir = (next - current);
+                exitDir = (next - current); //the exit direction is the direction from current to next
             }
-            Vector3 position = new Vector3(current.x * 6, current.y * 6, 0);
+            Vector3 position = new Vector3(current.x * 6, current.y * 6, 0); // the position of the room is set to the current room's position multiplied by 6,
+                                                                             // this is because the rooms are 6 units apart from each other in the grid, this is used to determine where to spawn the
+                                                                             // room and the objects in it
 
-            string cell = dungeonGeneration.dungeon[current.x][current.y];
-            Vector2Int extraDir = Vector2Int.zero;
+            string cell = dungeonGeneration.dungeon[current.x][current.y]; //the cell is the type of room which is taken from the grammar set in overwrite nodes
+            Vector2Int extraDir = Vector2Int.zero; // initialises the extra direction to zero so if extraDir in check3WayPath is 0 only do 2 way room
 
-            extraDir = check3WayPath(entryDir,exitDir, current);
+            extraDir = check3WayPath(entryDir,exitDir, current); //checks if path is going into branch so a 3 way path can be made
 
-            setRooms(cell, entryDir, exitDir, extraDir, current);
+            setRooms(cell, entryDir, exitDir, extraDir, current); // initialises the ways of the room
 
 
 
@@ -301,7 +285,7 @@ public class RoomManager : MonoBehaviour
         }
         foreach (List<Vector2Int> branch in dungeonGeneration.branchPaths)
         {
-            for (int i = 0; i < branch.Count; i++)
+            for (int i = 1; i < branch.Count; i++)// this starts at 1 because the first room in the branch is the same as the critical path room so it doesn't need to be set again
             {
                 Vector2Int current = branch[i];
                 Vector2Int prev;
@@ -309,21 +293,21 @@ public class RoomManager : MonoBehaviour
 
                 if (i > 0)
                 {
-                    prev = branch[i - 1];
+                    prev = branch[i - 1];// the previous room in the branch is set to prev getting the entrance direction of the room
                 }
                 else
                 {
                     // find which neighbour is the main path
-                    Vector2Int[] dirs = {
+                    Vector2Int[] dirs = { // the 4 main directions
                         Vector2Int.up,
                         Vector2Int.down,
                         Vector2Int.left,
                         Vector2Int.right
                     };
 
-                    prev = current;
+                    prev = current; //
 
-                    foreach (Vector2Int dir in dirs)
+                    foreach (Vector2Int dir in dirs)// loop through the 4 main directions to find which one is the main path connection
                     {
                         Vector2Int check = current + dir;
 
@@ -343,6 +327,10 @@ public class RoomManager : MonoBehaviour
                                 if (neighbour == "B0")
                                 {
                                     continue;
+                                }
+                                if (neighbour == "BK")
+                                {
+                                    keyRoom = true;
                                 }
                             }
                             if (neighbour != "0" && neighbour != "B" && neighbour != "BK")
@@ -389,69 +377,49 @@ public class RoomManager : MonoBehaviour
                 Vector2Int extraDir = Vector2Int.zero;
 
                 setRooms(cell, entryDir, exitDir,extraDir, current);
-
-
-
-
-
-
-
             }
         }
     }
-    void setRooms(string cell, Vector2Int entryDir, Vector2Int exitDir, Vector2Int extraDir, Vector2Int current )
+    void setRooms(string cell, Vector2Int entryDir, Vector2Int exitDir, Vector2Int extraDir, Vector2Int current)
     {
         GameObject room = GetRoomFromTemplates(entryDir, exitDir, extraDir, current);
         Vector3 position = new Vector3(current.x * size, current.y * size, 0);
+
         if (room != null)
         {
             Instantiate(room, position, Quaternion.identity);
         }
-        if (cell == "0")
-        {
-            Instantiate(room, position, Quaternion.identity);
-        }
 
-        // Start & End override
-        
         if (cell == "s")
         {
             playerpos.position = new Vector3(position.x, position.y, playerpos.position.z);
-            Instantiate(templates.startTilePrefab, position, Quaternion.identity);
+            Instantiate(templates.startTilePrefab, position, Quaternion.identity); // the start room is set to the position of the current room and the player is also set to this position, this is because the player starts in the start room
         }
+
         if (cell == "e")
         {
-            int obstacles;
-
             Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
-            Vector3 center = new Vector3(current.x * size, current.y * size, 0); // gets the center
-            obstacles = UnityEngine.Random.Range(0, 5);
-            for (int ii = 0; ii < obstacles; ii++)
-            {
-                // Vector3 spawnPos = center + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0); // puts the obstacle in a random area in the room
-                //Instantiate(templates.objects[UnityEngine.Random.Range(0, templates.objects.Length)], spawnPos, Quaternion.identity);
-            }
-            //similar to the obstacles postioning set nodes in the room
-            nodeGraph.CreateNodes(center);
+
+            Vector3 center = new Vector3(current.x * size, current.y * size, 0);
+            nodeGraph.CreateNodes(center); // run the create nodes function in node graph to spawn the nodes for the enemies to move around in, this is done here because the enemy rooms are the only rooms that need nodes
         }
 
         if (cell == "f")
         {
-            Instantiate(templates.endTilePrefab, position, Quaternion.identity);
+           
+            Instantiate(templates.endTilePrefab, position, Quaternion.identity); // the end room is set to the position of the current room and the end tile prefab is also set to this position, this is because the player needs to reach the end room to win
+            if (keyRoom)
+            {
+                Instantiate(templates.locked, position, Quaternion.identity); // if the key room has been placed then place the key room in the end room so the player needs to get the key to win
+            }
+            
+            
         }
 
-        
-        if (room != null)
-        {
-            Instantiate(room, position, Quaternion.identity);
-        }
-        // Handle branch-specific rooms
         if (cell == "t" || cell == "p")
         {
             Instantiate(templates.floor, position, Quaternion.identity);
         }
-
-        
 
         if (cell == "B")
         {
@@ -459,31 +427,48 @@ public class RoomManager : MonoBehaviour
             Instantiate(templates.enemyRooms[UnityEngine.Random.Range(0, templates.enemyRooms.Length)], position, Quaternion.identity);
             nodeGraph.CreateNodes(center);
         }
+
         if (cell == "BK")
         {
+            keyRoom = true;
             Instantiate(templates.keyRoom, position, Quaternion.identity);
-
+           
         }
 
     }
+    public void checkForKeyRoom()
+            {
+                for (int x = 0; x < dungeonGeneration.dimensions.x; x++)
+                {
+                    for (int y = 0; y < dungeonGeneration.dimensions.y; y++)
+                    {
+                        if (dungeonGeneration.dungeon[x][y] == "BK")
+                        {
+                            keyRoom = true;
+                        }
+                    }
+                }
+            }
     Vector2Int check3WayPath(Vector2Int entryDir, Vector2Int exitDir, Vector2Int current)
     {
-        foreach (var branch in dungeonGeneration.branchPaths)
+        foreach (List<Vector2Int> branch in dungeonGeneration.branchPaths)
         {
-            if (branch.Count == 0) continue;
+            if (branch.Count < 2) continue;
 
-            Vector2Int branchStart = branch[0]; // get the start of the branch (the connection point to the main path)
-            Vector2Int diff = branchStart - current; // get the direction from the current room to the start of the branch
+            // Only the actual critical path room that owns the branch
+            // is allowed to become a 3-way room.
+            if (current != branch[0])
+                continue;
+
+            Vector2Int branchStart = branch[1]; // the first room in the branch is the same as the critical path room so we check the second room in the branch to find the direction of the branch
+
+            Vector2Int diff = branchStart - current; // the direction of the branch is the difference between the current room and the first room in the branch
 
             // Must be directly adjacent
             if ((Mathf.Abs(diff.x) + Mathf.Abs(diff.y)) != 1)
                 continue;
 
-            // Only connect to actual branch entrance
-           //if (dungeonGeneration.dungeon[branchStart.x][branchStart.y] != "B0")
-            //    continue;
-
-            // Prevent fake 3-ways (don’t reuse entry/exit directions)
+            // Don't reuse the normal critical path entry/exit
             if (diff == entryDir || diff == exitDir)
                 continue;
 
@@ -493,5 +478,5 @@ public class RoomManager : MonoBehaviour
         return Vector2Int.zero;
     }
 
-  
+
 }

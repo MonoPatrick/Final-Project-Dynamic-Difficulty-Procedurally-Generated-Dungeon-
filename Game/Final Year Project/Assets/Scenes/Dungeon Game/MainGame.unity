@@ -500,8 +500,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d486b0deb031b9743b9e6982439073b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1.13
-  playerRank: 3
+  difficulty: 1.88
+  playerRank: 5
+  difficultyHistory: []
 --- !u!4 &426359291
 Transform:
   m_ObjectHideFlags: 0
@@ -1583,7 +1584,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 99.619995, y: 28.270004}
+  m_AnchoredPosition: {x: 113.15997, y: 151.60999}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1206401024
@@ -2050,6 +2051,7 @@ MonoBehaviour:
   RightTopBottomRoom: {fileID: 4356133472512288378, guid: 00942d02bcef01c4499222efc0eae79d, type: 3}
   barricade: {fileID: 3750843522054666183, guid: 3a42af8532249da42b4650ba8c31a40e, type: 3}
   keyRoom: {fileID: 2904939564567873662, guid: 67ffe1b71addde74e9824d5e2cf8e924, type: 3}
+  locked: {fileID: 9215242199678487791, guid: 676c966bae6a656489f82ad1e220559f, type: 3}
 --- !u!4 &1304752558
 Transform:
   m_ObjectHideFlags: 0
@@ -2123,6 +2125,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8091b79b26816c48a17fbcf22868385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1317668541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317668515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978776a281f6bc64f81f6761dd981693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keys: 0
 --- !u!1 &1320785089
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,6 +3192,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 5573105788758588703, guid: 3e9bbaab45dc43c499985759f4a96ad9, type: 3}
   nodeList: []
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 256
   npcs:
   - {fileID: 8398141213661430820, guid: 61786007906c5114daad61bf1062a8a7, type: 3}
   - {fileID: 8398141213661430820, guid: 7fb092d94e16a3d4ea0c117613b7c09d, type: 3}
@@ -3558,6 +3576,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8605921973130978554, guid: 690a0bc57359c8c4d969b40657e9c08c, type: 3}
       insertIndex: 5
       addedObject: {fileID: 1317668530}
+    - targetCorrespondingSourceObject: {fileID: 8605921973130978554, guid: 690a0bc57359c8c4d969b40657e9c08c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1317668541}
   m_SourcePrefab: {fileID: 100100000, guid: 690a0bc57359c8c4d969b40657e9c08c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

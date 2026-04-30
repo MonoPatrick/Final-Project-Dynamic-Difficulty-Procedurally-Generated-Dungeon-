@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 public class ScoreCount : MonoBehaviour
 {
     public static ScoreCount Instance;
@@ -30,6 +30,22 @@ public class ScoreCount : MonoBehaviour
     private void Update()
     {
         //FindObjectOfType<ScoreDisplay>().UpdateScore(score);
+    }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu") //change to your menu scene name
+        {
+            Destroy(gameObject);
+        }
     }
 
 }

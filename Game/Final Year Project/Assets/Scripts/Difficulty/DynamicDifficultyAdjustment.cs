@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class DynamicDifficultyAdjustment : MonoBehaviour
 {
     public static DynamicDifficultyAdjustment Instance;
@@ -9,6 +9,8 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
     public float difficulty;
     public enum Rank { Rank1 = 1, Rank2 = 2, Rank3 = 3, Rank4 = 4, Rank5 = 5 };
     public Rank playerRank;
+    public List<float> difficultyHistory = new List<float>();
+    private float timer = 0f;
 
     private void Awake()
     {
@@ -44,6 +46,16 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
     }
     private void Update()
     {
+        timer += Time.deltaTime;
+
+        if (timer >= 25f)
+        {
+            difficultyHistory.Add(difficulty);
+            timer = 0f;
+
+            Debug.Log("Added difficulty: " + difficulty);
+        }
+
         correctingDifficulty();
         settingRank();
 
@@ -113,7 +125,23 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
     {
         difficulty += amount;
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-    
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu") //change to your menu scene name
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
 }
 

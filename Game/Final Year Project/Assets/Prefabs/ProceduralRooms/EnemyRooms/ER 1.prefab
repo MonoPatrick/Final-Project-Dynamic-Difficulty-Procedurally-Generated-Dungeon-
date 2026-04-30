@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9015870131860193399}
   - component: {fileID: 7430228026641735512}
   - component: {fileID: 8882375443703101696}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 2nd Wall
   m_TagString: Obstacles
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 4575038629106814217}
   - component: {fileID: 2149514287477554339}
   - component: {fileID: 3805237678506252579}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 1st Wall
   m_TagString: Obstacles
   m_Icon: {fileID: 0}

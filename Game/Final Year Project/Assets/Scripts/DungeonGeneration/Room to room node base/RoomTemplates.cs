@@ -30,6 +30,7 @@ public class RoomTemplates : MonoBehaviour
     public GameObject RightTopBottomRoom;
     public GameObject barricade;
     public GameObject keyRoom;
+    public GameObject locked;
 
 
 }
