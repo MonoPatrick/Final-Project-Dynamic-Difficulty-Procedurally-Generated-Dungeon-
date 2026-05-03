@@ -415,6 +415,10 @@ public class DungeonGeneration : MonoBehaviour
                         dungeon[next.x][next.y] = "BK"; // Branch End
                         keyRoom += 1;
                     }
+                    else
+                    {
+                        dungeon[next.x][next.y] = "t"; // Branch End
+                    }
                     
                 }
                 else if (branch.Count == 0)

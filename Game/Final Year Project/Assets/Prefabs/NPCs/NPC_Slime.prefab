@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 7720415290778119453}
   - component: {fileID: -5164101022178104312}
   - component: {fileID: -8456053649441734585}
+  - component: {fileID: 8576299787860136894}
+  - component: {fileID: 7813252915879408168}
   m_Layer: 6
   m_Name: NPC_Slime
   m_TagString: Enemy
@@ -173,6 +175,7 @@ MonoBehaviour:
   playerlayer:
     serializedVersion: 2
     m_Bits: 8
+  animator: {fileID: 7813252915879408168}
 --- !u!114 &7720415290778119453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,3 +261,40 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8576299787860136894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177126435386268519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4f7402f98db97408f40e7d543daff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7813252915879408168}
+  npcStates: {fileID: -3642667731351815636}
+  enemyController: {fileID: 8398141213661430820}
+--- !u!95 &7813252915879408168
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177126435386268519}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 735f8e0f04b6fb34d9142c0ac0410ec8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

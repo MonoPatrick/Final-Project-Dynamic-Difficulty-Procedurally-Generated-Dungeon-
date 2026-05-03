@@ -29,7 +29,7 @@ public class EnemyHealth : MonoBehaviour
         else if (curHealth <= 0)
         {
 
-            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.05f);  
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(0.07f);  
             FindObjectOfType<ScoreCount>().AddScore(1000);
             FindObjectOfType<ScoreCount>().AddEnemyKilled(1);
 
@@ -38,7 +38,7 @@ public class EnemyHealth : MonoBehaviour
                DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4 ||
                DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
             {
-                loot = UnityEngine.Random.Range(0, 6);
+                loot = UnityEngine.Random.Range(0, 7);
             }
 
 

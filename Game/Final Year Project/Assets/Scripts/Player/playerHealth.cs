@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (collision.gameObject.tag == "Projectile" && m_canTakeDamage)
         {
-            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.06f);
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.05f);
 
             if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
             {
@@ -79,12 +79,25 @@ public class PlayerHealth : MonoBehaviour
         if (collision.gameObject.tag == "Health")
         {
             ChangeHealth(40);
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.01f);
             Destroy(collision.gameObject);
         }
 
         if (collision.gameObject.tag == "Coin")
         {
             FindObjectOfType<ScoreCount>().AddScore(1000);
+            Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.tag == "GreaterHealth")
+        {
+            ChangeHealth(80);
+            DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.06f);
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.tag == "bundleOfCoins")
+        {
+            FindObjectOfType<ScoreCount>().AddScore(10000);
             Destroy(collision.gameObject);
         }
     }

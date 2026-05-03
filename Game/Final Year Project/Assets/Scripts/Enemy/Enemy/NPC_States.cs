@@ -20,6 +20,7 @@ public class NPC_States : MonoBehaviour
     float nextChasePathTime = 0f;
     float chasePathCooldown = 0.1f;
 
+    public Animator animator;
     private void Start()
     {
         isAttacking = false;
@@ -72,13 +73,14 @@ public class NPC_States : MonoBehaviour
 
             if (playerHealth != null && playerHealth.GetCanTakeDamage())
             {
-                DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.06f);
+                DynamicDifficultyAdjustment.Instance.changeDifficulty(-0.05f);
                 playerHealth.ChangeHealth(-damage);
                 playerHealth.Invulnerability(1.2f);
 
                 Debug.Log("Player hurt!");
             }
         }
+        
 
         StartCoroutine(Timer(1.5f));
     }

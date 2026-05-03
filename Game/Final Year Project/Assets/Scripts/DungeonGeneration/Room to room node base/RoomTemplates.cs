@@ -31,6 +31,7 @@ public class RoomTemplates : MonoBehaviour
     public GameObject barricade;
     public GameObject keyRoom;
     public GameObject locked;
+    public GameObject treasureRoom;
 
 
 }

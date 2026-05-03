@@ -417,9 +417,27 @@ public class RoomManager : MonoBehaviour
             
         }
 
-        if (cell == "t" || cell == "p")
+        if (cell == "p")
         {
-            Instantiate(templates.floor, position, Quaternion.identity);
+            int random = UnityEngine.Random.Range(0, 3);
+
+            if (random == 0 || random == 2)
+            {
+                Instantiate(templates.floor, position, Quaternion.identity);
+            }
+            if (random == 1)
+            {
+                Instantiate(templates.treasureRoom, position, Quaternion.identity);
+            }
+
+        }
+        if (cell == "t")
+        {
+            
+            
+                Instantiate(templates.treasureRoom, position, Quaternion.identity);
+            
+
         }
 
         if (cell == "B")
