@@ -48,7 +48,7 @@ public class DynamicDifficultyAdjustment : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer >= 25f)
+        if (timer >= 30f)
         {
             difficultyHistory.Add(difficulty);
             timer = 0f;

@@ -11,8 +11,8 @@ public class DungeonGeneration : MonoBehaviour
 
     public List<List<string>> dungeon = new List<List<string>>(); // example with int cells
     public List<Vector2Int> criticalPathRooms = new List<Vector2Int>();
-    public List<List<Vector2Int>> branchPaths = new List<List<Vector2Int>>();
-    public List<List<Vector2Int>> roomDirections = new List<List<Vector2Int>>();
+    public List<List<Vector2Int>> branchPaths = new List<List<Vector2Int>>(); // list of branches, each branch is a list of Vector2Int positions
+    public List<List<Vector2Int>> roomDirections = new List<List<Vector2Int>>(); 
     public Vector2Int previousRoom;
     //difficulty
     public DynamicDifficultyAdjustment DDA;
@@ -64,19 +64,19 @@ public class DungeonGeneration : MonoBehaviour
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
         {
-            critialPathLength = 10;
+            critialPathLength = 8;
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
         {
-            critialPathLength = 15;
+            critialPathLength = 10;
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
         {
-            critialPathLength = 20;
+            critialPathLength = 13;
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
         {
-            critialPathLength = 20;
+            critialPathLength = 15;
         }
        
 
@@ -319,17 +319,17 @@ public class DungeonGeneration : MonoBehaviour
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
         {
             branches = 1;
-            branchLength = new Vector2Int(3, 5);
+            branchLength = new Vector2Int(2, 3);
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
         {
             branches = 2;
-            branchLength = new Vector2Int(5, 7);
+            branchLength = new Vector2Int(2, 4);
         }
         if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
         {
             branches = 3;
-            branchLength = new Vector2Int(5, 7);
+            branchLength = new Vector2Int(3,4);
         }
         branchPaths.Clear();
 

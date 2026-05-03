@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
     public void Instructions()
     {
         // Load the next scene or the main game scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainGame");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Instructions");
     }
 
     public void QuitGame()

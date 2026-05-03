@@ -7,8 +7,10 @@ public class ScoreDisplay : MonoBehaviour
 {
     public TMP_Text score;
     private int scoreCount = 0;
+    private int enemieskilledCount;
     public static ScoreDisplay Instance;
 
+    public bool enemiesKilled = false;
     void Awake()
     {
         score = GetComponent<TMP_Text>(); // automatically grab itself
@@ -23,13 +25,31 @@ public class ScoreDisplay : MonoBehaviour
 
     public void AddScoreToDisplay(int scoreToSet)
     {
-        scoreCount += scoreToSet;
-        score.text = "Score: " + scoreCount.ToString();
+        if (!enemiesKilled)
+        {
+            scoreCount += scoreToSet;
+            score.text = "Score: " + scoreCount.ToString();
+        }
+        if (enemiesKilled)
+        {
+            score.text = "Enemies Defeated: " + enemieskilledCount.ToString();
+        }
+    }
+    public void AddEnemyKilled(int killed)
+    {
+        enemieskilledCount += killed;
     }
 
     public void UpdateScore(int newScore)
     {
-        scoreCount = newScore;
-        score.text = "Score: " + scoreCount.ToString();
+        if (!enemiesKilled)
+        {
+            scoreCount = newScore;
+            score.text = "Score: " + scoreCount.ToString();
+        }
+        if (enemiesKilled)
+        {
+            score.text = "Enemies killed: " + ScoreCount.Instance.enemieskilled.ToString();
+        }
     }
 }

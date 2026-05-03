@@ -31,9 +31,10 @@ public class RoomManager : MonoBehaviour
     }
     public void overwriteNodes()
     {
-        // in this function the grammars set in dungeon generation are  turned into grammars that'll 
-        // be used later on to instantiate the room type
-
+        /*
+        in this function the grammars set in dungeon generation are 
+        turned into grammars that'll be used later on to instantiate the room type
+        */
         for (int x = 0; x < dungeonGeneration.dimensions.x; x++)
         {
             for (int y = 0; y < dungeonGeneration.dimensions.y; y++)
@@ -267,9 +268,9 @@ public class RoomManager : MonoBehaviour
             {
                 exitDir = (next - current); //the exit direction is the direction from current to next
             }
-            Vector3 position = new Vector3(current.x * 6, current.y * 6, 0); // the position of the room is set to the current room's position multiplied by 6,
-                                                                             // this is because the rooms are 6 units apart from each other in the grid, this is used to determine where to spawn the
-                                                                             // room and the objects in it
+            Vector3 position = new Vector3(current.x * 6, current.y * 6, 0); /*the position of the room is set to the current room's position multiplied by 6,
+                                                                               this is because the rooms are 6 units apart from each other in the grid, this is used to determine where to spawn the
+                                                                               room and the objects in it*/
 
             string cell = dungeonGeneration.dungeon[current.x][current.y]; //the cell is the type of room which is taken from the grammar set in overwrite nodes
             Vector2Int extraDir = Vector2Int.zero; // initialises the extra direction to zero so if extraDir in check3WayPath is 0 only do 2 way room
@@ -465,7 +466,7 @@ public class RoomManager : MonoBehaviour
             Vector2Int diff = branchStart - current; // the direction of the branch is the difference between the current room and the first room in the branch
 
             // Must be directly adjacent
-            if ((Mathf.Abs(diff.x) + Mathf.Abs(diff.y)) != 1)
+            if ((Mathf.Abs(diff.x) + Mathf.Abs(diff.y)) != 1) // if the difference in x and y is not 1 then it's not directly adjacent meaning it can't be a 3 way path
                 continue;
 
             // Don't reuse the normal critical path entry/exit

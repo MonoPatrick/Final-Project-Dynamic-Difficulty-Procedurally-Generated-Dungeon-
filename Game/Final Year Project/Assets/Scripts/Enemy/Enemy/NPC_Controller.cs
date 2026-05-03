@@ -26,7 +26,7 @@ public class NPC_Controller : MonoBehaviour
 
     private float lastDifficulty = -1f;
     private DynamicDifficultyAdjustment.Rank lastRank;
-
+    float damage;
     public NPC_States states;
     public enum StateMachine
     {
@@ -74,17 +74,37 @@ public class NPC_Controller : MonoBehaviour
                     states.NPCPatrolling();
                     break;
                 case StateMachine.Engage:
-                    states.NPCEngage(10 * DDA.difficulty);
+                    states.NPCEngage(damage);
                     break;
                 case StateMachine.Evade:
                     states.NPCEvade();
                     break;
                 case StateMachine.Attacking:
-                    states.NPCAttack( 10 * DDA.difficulty);
+                    states.NPCAttack(damage);
                     break;
             }
         }
-        
+
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank1)
+        {
+            damage = 14 * DDA.difficulty;
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank2)
+        {
+            damage = 11 * DDA.difficulty;
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank3)
+        {
+            damage = 11 * DDA.difficulty;
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank4)
+        {
+            damage = 11 * DDA.difficulty;
+        }
+        if (DynamicDifficultyAdjustment.Instance.playerRank == DynamicDifficultyAdjustment.Rank.Rank5)
+        {
+            damage = 11 * DDA.difficulty;
+        }
         float dist = Vector2.Distance(transform.position, player.position);
         bool playerSeen = dist < distance;
         bool playerAttackRange = dist < attackRange;

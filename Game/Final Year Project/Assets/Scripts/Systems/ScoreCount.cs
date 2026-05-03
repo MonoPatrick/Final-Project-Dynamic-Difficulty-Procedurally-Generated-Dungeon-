@@ -7,6 +7,7 @@ public class ScoreCount : MonoBehaviour
 {
     public static ScoreCount Instance;
     public int score;
+    public int enemieskilled;
 
     private void Awake()
     {
@@ -35,7 +36,10 @@ public class ScoreCount : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
+    public void AddEnemyKilled(int killed)
+    {
+        enemieskilled += killed;
+    }
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;

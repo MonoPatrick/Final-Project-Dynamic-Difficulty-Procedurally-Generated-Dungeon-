@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
     ------------------- Code Monkey -------------------
 
     Thank you for downloading this package
@@ -7,8 +7,7 @@
     Cheers!
 
                unitycodemonkey.com
-    --------------------------------------------------
- */
+    --------------------------------------------------*/
 
 using System;
 using System.Collections;
@@ -44,12 +43,14 @@ public class Window_Graph : MonoBehaviour {
     private void ShowGraph(List<float> valueList) {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = 2f;
-        float xSize = 50f;
+        float yMinimum = -0.5f;
+        float graphWidth = graphContainer.sizeDelta.x;
+        float xSize = graphWidth / (valueList.Count - 1);
 
         GameObject lastCircleGameObject = null;
         for (int i = 0; i < valueList.Count; i++) {
-            float xPosition = xSize + i * xSize;
-            float yPosition = (valueList[i] / yMaximum) * graphHeight;
+            float xPosition = i * xSize;
+            float yPosition = ((valueList[i] - yMinimum) / (yMaximum - yMinimum)) * graphHeight;
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
             if (lastCircleGameObject != null) {
                 CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition);
@@ -73,3 +74,4 @@ public class Window_Graph : MonoBehaviour {
     }
 
 }
+

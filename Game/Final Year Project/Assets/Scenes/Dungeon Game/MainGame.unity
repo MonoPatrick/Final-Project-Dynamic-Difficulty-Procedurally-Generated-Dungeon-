@@ -501,7 +501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 1.88
-  playerRank: 5
+  playerRank: 2
   difficultyHistory: []
 --- !u!4 &426359291
 Transform:
@@ -1845,6 +1845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: {fileID: 1210164977}
+  enemiesKilled: 0
 --- !u!1 &1256223002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,7 +2085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa343926582f9a8488da98ec00c20932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 120
+  currentHealth: 100
   maxHealth: 0
   healthBar: {fileID: 1567695500}
   debug: 0
@@ -2138,6 +2139,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keys: 0
+--- !u!114 &1317668548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317668515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e89b5739360ad79489b39f323c7690ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1320785089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2587,7 +2600,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 191.35, y: -40.599976}
+  m_AnchoredPosition: {x: 190.24002, y: -40.599976}
   m_SizeDelta: {x: 382.82, y: 81.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567695500
@@ -3308,6 +3321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  enemieskilled: 0
 --- !u!1 &2097093695
 GameObject:
   m_ObjectHideFlags: 0
@@ -3579,6 +3593,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8605921973130978554, guid: 690a0bc57359c8c4d969b40657e9c08c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1317668541}
+    - targetCorrespondingSourceObject: {fileID: 8605921973130978554, guid: 690a0bc57359c8c4d969b40657e9c08c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1317668548}
   m_SourcePrefab: {fileID: 100100000, guid: 690a0bc57359c8c4d969b40657e9c08c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
