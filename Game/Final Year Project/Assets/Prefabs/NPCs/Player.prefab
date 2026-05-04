@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6.27, y: -52.410004, z: -2.22}
-  m_LocalScale: {x: 1, y: 1.0086007, z: 0}
+  m_LocalScale: {x: 1.18, y: 1.1901488, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -131,9 +131,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f5ee6385e79a544a303cd90bbab304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combat: {fileID: 0}
   gameObject: {fileID: 8605921973130978554}
   cooldown:
-    cooldownTime: 1
+    cooldownTime: 0.8
   grounded: 1
 --- !u!114 &1540591258803972526
 MonoBehaviour:
@@ -147,13 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8091b79b26816c48a17fbcf22868385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: 3
+  DDA: {fileID: 0}
   playerMovement: 5
-  playerRank: 4
   direction: 0
-  heart1: {fileID: 0}
-  heart2: {fileID: 0}
-  heart3: {fileID: 0}
   multiplier: 0
 --- !u!114 &3293369931498694680
 MonoBehaviour:
